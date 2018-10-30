@@ -22,7 +22,7 @@ def main():
         print("Must choose one or more of [-l, -b, -a]")
 
     if args.lan:
-        lan.get_LAN_hosts(args.verbose, args.visualize)
+        lan.LAN_hosts(args.verbose, args.visualize)
     if args.beyond:
         pass
     if args.approximate:
