@@ -2,6 +2,7 @@ import time
 from multiprocessing import Pool
 import netifaces # https://pypi.org/project/netifaces/
 import itertools
+import arpreq # https://pypi.org/project/arpreq/
 
 # Local Files
 import viz
@@ -27,20 +28,36 @@ def LAN_hosts(is_verbose, is_visualized):
         if is_verbose:
             verbose.LAN_info(local_IP, gateway, gateway_mask, interface)
 
+        # Get the possible LAN addresses
         possible_LAN_addrs = LAN_possibilities(is_verbose, local_IP, gateway_mask)
 
+        # Run ping over the LAN range
         if is_verbose:
             verbose.LAN_ping_start(possible_LAN_addrs[0], possible_LAN_addrs[-1])
 
         ping_start = time.time()
-        LAN_hosts = ping_LAN(is_verbose, possible_LAN_addrs)
+        ping_hosts = ping_LAN(is_verbose, possible_LAN_addrs)
         ping_time_elapsed = round(time.time() - ping_start, 2)
 
         if is_verbose:
-            verbose.LAN_ping_results(ping_time_elapsed, LAN_hosts, local_IP, gateway)
+            verbose.LAN_ping_results(ping_time_elapsed, ping_hosts, local_IP, gateway)
+
+        # Arp request over the LAN range
+        if is_verbose:
+            verbose.LAN_ARP_start(possible_LAN_addrs[0], possible_LAN_addrs[-1])
+
+        ARP_start = time.time()
+        ARP_hosts = ARP_LAN(possible_LAN_addrs)
+        ARP_time_elapsed = round(time.time() - ARP_start, 2)
+        
+        if is_verbose:
+            verbose.LAN_ARP_results(ARP_time_elapsed, ARP_hosts, local_IP, gateway)
+
+        LAN_Dict = create_LAN_Dict(ping_hosts, ARP_hosts, local_IP, gateway)
 
         if is_visualized:
-            viz.visualize_LAN(LAN_hosts, local_IP, gateway)
+            viz.visualize_LAN(LAN_Dict)
+    
 
 def LAN_info(is_verbose):
     """ Returns the local IP, gateway, and gateway mask if they are found. """
@@ -201,3 +218,35 @@ def ping(dest_addr):
         return [dest_addr, RTT]
     else:
         return []
+
+def ARP_LAN(LAN_possibilities):
+    """ Returns IPv4 and MAC addresses of ARP requests of the LAN. """
+
+    found_with_ARP = []
+    for ip in LAN_possibilities:
+        res = arpreq.arpreq(ip)
+
+        if res is not None:
+            found_with_ARP.append([ip, res])
+
+    return found_with_ARP
+
+def create_LAN_Dict(ping_hosts, ARP_hosts, local_IP, gateway):
+    """ Return dictionary with LAN info in the form of: {host : [RTT, MAC, Description]}"""
+    LAN_Dict = {}
+    for host, RTT in ping_hosts:
+        description = ''
+        if host == local_IP:
+            description = "Local Host"
+        elif host == gateway:
+            description = "Gateway"
+        
+        LAN_Dict[host] = [str(round(RTT, 4)), '', description]
+
+    for host, MAC in ARP_hosts:
+        if host in LAN_Dict:
+            LAN_Dict[host][1] = MAC
+        else:
+            LAN_Dict[host] = ["null", MAC, '']
+
+    return LAN_Dict
