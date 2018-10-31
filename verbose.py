@@ -43,3 +43,17 @@ def LAN_ARP_results(ARP_time_elapsed, ARP_hosts, local_IP, gateway_IP):
 
         print("{:16} {:18} {}".format(host, MAC, description))
     print()
+
+def LAN_port_scan_results(port_scan_elapsed, open_ports):
+    print("Port Scan Elapsed Time:", port_scan_elapsed, "seconds\n")
+    # print("{:16} {:18} {}".format("Host", "MAC", "Description"))  
+    # print("*" * 46)      
+    # for host, MAC in ARP_hosts:
+    #     description = ""
+    #     if host == local_IP:
+    #         description = "Local Host"
+    #     elif host == gateway_IP:
+    #         description = "Gateway"
+
+    #     print("{:16} {:18} {}".format(host, MAC, description))
+    print()

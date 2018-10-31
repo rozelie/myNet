@@ -1,13 +1,16 @@
 import time
-from multiprocessing import Pool
-import netifaces # https://pypi.org/project/netifaces/
 import itertools
+from multiprocessing import Pool, cpu_count
+import multiprocessing.dummy 
+from threading import Thread
+import netifaces # https://pypi.org/project/netifaces/
 import arpreq # https://pypi.org/project/arpreq/
 
 # Local Files
 import viz
 import verbose
-import ping as pingInterface
+import port_scan
+import ping as ping_interface
 
 
 def LAN_hosts(is_verbose, is_visualized):
@@ -53,12 +56,19 @@ def LAN_hosts(is_verbose, is_visualized):
         if is_verbose:
             verbose.LAN_ARP_results(ARP_time_elapsed, ARP_hosts, local_IP, gateway)
 
-        LAN_Dict = create_LAN_Dict(ping_hosts, ARP_hosts, local_IP, gateway)
+        # Run port scan
+        port_scan_start = time.time()
+        open_ports = open_LAN_ports(ping_hosts, ARP_hosts)
+        port_scan_elapsed = round(time.time() - port_scan_start, 2)
 
+        if is_verbose:
+            verbose.LAN_port_scan_results(port_scan_elapsed, open_ports)
+
+        # Create dictionary about the LAN for visualization
+        LAN_Dict = create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway)
         if is_visualized:
             viz.visualize_LAN(LAN_Dict)
     
-
 def LAN_info(is_verbose):
     """ Returns the local IP, gateway, and gateway mask if they are found. """
 
@@ -151,8 +161,9 @@ def bin_combinations(bin_str_len):
 
     bin_possibilities = []
 
-    # Only try subnet masks with less than 16 alterable bits for computational complexity reasons
-    if bin_str_len < 16:
+    # Only try subnet masks with less than 12 alterable bits as to not 
+    # ping or arp more than 2^13 (8192) addresses
+    if bin_str_len < 13:
         # Get all of the binary possibilities of bin_str_len bits
         bin_possibilities = list(itertools.product(["0", "1"], repeat=bin_str_len))
         bin_possibilities = [''.join(i) for i in bin_possibilities]
@@ -197,12 +208,27 @@ def ping_LAN(is_verbose, LAN_possibilities):
 
     ping_results = []
 
+    # PROCESSES
     # https://stackabuse.com/parallel-processing-in-python/
-    agents = 12
-    chunck_size = len(LAN_possibilities) // agents
-    with Pool(processes=agents) as pool:
-        ping_results = pool.map(ping, LAN_possibilities, chunck_size)
+    # agents = 12
+    # chunck_size = len(LAN_possibilities) // agents
+    # with ThreadPool(processes=agents) as pool:
+    #     ping_results = pool.map(ping, LAN_possibilities, chunck_size)
     
+    # THREADPOOL
+    # agents = len(LAN_possibilities)
+    # with ThreadPool(processes=agents) as pool:
+    #     for addr in LAN_possibilities:
+    #         async_result = pool.apply_async(ping, addr)
+    #         ping_results.append(async_result.get())
+
+    # DUMMY THREADING
+    # https://stackoverflow.com/questions/29371091/how-to-ping-a-range-of-ip-addresses-using-multithreading
+    threads = 2 * cpu_count()
+    print("Pinging with {} threads.".format(threads))
+    with multiprocessing.dummy.Pool(threads) as pool:
+        ping_results = pool.map(ping, [host for host in LAN_possibilities])
+
     LAN_hosts = []
     for res in ping_results:
         if res != []:
@@ -213,7 +239,7 @@ def ping_LAN(is_verbose, LAN_possibilities):
 def ping(dest_addr):
     """ Pings an IPv4 address, returning RTT if there is a response. """
 
-    RTT = pingInterface.ping(dest_addr)
+    RTT = ping_interface.ping(dest_addr)
     if RTT is not None:
         return [dest_addr, RTT]
     else:
@@ -225,15 +251,40 @@ def ARP_LAN(LAN_possibilities):
     found_with_ARP = []
     for ip in LAN_possibilities:
         res = arpreq.arpreq(ip)
-
         if res is not None:
             found_with_ARP.append([ip, res])
 
     return found_with_ARP
 
-def create_LAN_Dict(ping_hosts, ARP_hosts, local_IP, gateway):
-    """ Return dictionary with LAN info in the form of: {host : [RTT, MAC, Description]}"""
-    LAN_Dict = {}
+def open_LAN_ports(ping_hosts, ARP_hosts):
+    
+    # Get the list of unique hosts
+    ping_hosts = set([host for host, RTT in ping_hosts])
+    ARP_hosts = set([host for host, MAC in ARP_hosts])
+    only_in_ARP = ARP_hosts - ping_hosts
+    all_hosts = list(ping_hosts) + list(only_in_ARP)
+
+    ## THREADPOOL
+    # agents = len(all_hosts)
+    # chunck_size = 1
+
+    # Create a thread for each host, scanning for open ports
+    # open_ports = []
+    # with ThreadPool(processes=agents) as pool:
+    #     open_ports = pool.map(port_scan.get_open_ports, all_hosts, chunck_size)
+
+    threads = 2 * cpu_count()
+    print("Port scanning with {} threads.".format(threads))
+    with multiprocessing.dummy.Pool(threads) as pool:
+        open_ports = pool.map(port_scan.get_open_ports, [host for host in all_hosts])
+
+    return open_ports
+
+def create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway):
+    """ Return dictionary with LAN info in the form of: {host : [RTT, MAC, Description, Open Ports]}"""
+    
+    LAN_dict = {}
+    # Add description and RTT from ping_hosts
     for host, RTT in ping_hosts:
         description = ''
         if host == local_IP:
@@ -241,12 +292,30 @@ def create_LAN_Dict(ping_hosts, ARP_hosts, local_IP, gateway):
         elif host == gateway:
             description = "Gateway"
         
-        LAN_Dict[host] = [str(round(RTT, 4)), '', description]
+        LAN_dict[host] = [str(round(RTT, 4)), '', description, []]
 
+    # Add MAC and new hosts from ARP_hosts
     for host, MAC in ARP_hosts:
-        if host in LAN_Dict:
-            LAN_Dict[host][1] = MAC
+        if host in LAN_dict:
+            LAN_dict[host][1] = MAC
         else:
-            LAN_Dict[host] = ["null", MAC, '']
+            LAN_dict[host] = ["null", MAC, '', []]
 
-    return LAN_Dict
+    # Add found open ports
+    for host_info in open_ports:
+        host = host_info[0]
+        ports = host_info[1]
+
+        ports_str = ""
+        for i in range(len(ports)):
+            if i != len(ports) - 1:
+                ports_str += ports[i] + ','
+            else:
+                ports_str += ports[i]
+
+        if host in LAN_dict:
+            LAN_dict[host][3] = ports
+        else:
+            LAN_dict[host] = ["null", '', '', ports]
+
+    return LAN_dict
