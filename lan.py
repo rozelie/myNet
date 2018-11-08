@@ -3,6 +3,7 @@ import itertools
 from multiprocessing import Pool, cpu_count
 import multiprocessing.dummy 
 from threading import Thread
+from queue import Queue, Empty
 import netifaces # https://pypi.org/project/netifaces/
 import arpreq # https://pypi.org/project/arpreq/
 
@@ -123,7 +124,7 @@ def logical_AND_dotted_quads(quad1, quad2):
     return anded_quads_dotted
     
 def LAN_possibilities(isVerbose, local_IP, gatewayMask):
-    """ Get the dotted quad representation of possibilites of IPv4 addresses within the LAN. """
+    """ Get all possibilites of IPv4 addresses within the LAN. """
 
     # AND local IP and gateway mask
     anded_quad = logical_AND_dotted_quads(local_IP, gatewayMask)
@@ -210,24 +211,38 @@ def ping_LAN(is_verbose, LAN_possibilities):
 
     # PROCESSES
     # https://stackabuse.com/parallel-processing-in-python/
-    # agents = 12
+    # agents = 14
     # chunck_size = len(LAN_possibilities) // agents
-    # with ThreadPool(processes=agents) as pool:
+    # with Pool(processes=agents) as pool:
     #     ping_results = pool.map(ping, LAN_possibilities, chunck_size)
     
-    # THREADPOOL
-    # agents = len(LAN_possibilities)
-    # with ThreadPool(processes=agents) as pool:
-    #     for addr in LAN_possibilities:
-    #         async_result = pool.apply_async(ping, addr)
-    #         ping_results.append(async_result.get())
-
     # DUMMY THREADING
     # https://stackoverflow.com/questions/29371091/how-to-ping-a-range-of-ip-addresses-using-multithreading
-    threads = 2 * cpu_count()
-    print("Pinging with {} threads.".format(threads))
-    with multiprocessing.dummy.Pool(threads) as pool:
-        ping_results = pool.map(ping, [host for host in LAN_possibilities])
+    # threads = 50
+    # print("Pinging with {} threads.".format(threads))
+    # with multiprocessing.dummy.Pool(threads) as pool:
+    #     ping_results = pool.map(ping, [host for host in LAN_possibilities])
+
+    # THREADING WITH USER ABLE TO QUIT PROCESSES
+    # https://stackoverflow.com/questions/39501529/python-stop-thread-with-raw-input
+    queue = Queue()
+    num_threads = 50
+    for addr in LAN_possibilities:
+        queue.put(addr)
+    
+    end_queue = Queue()
+    input_thread = Thread(target=input_process, args=(end_queue, num_threads))
+    input_thread.start()
+    print("Enter 'q' and <ENTER> to end the LAN ping.")
+
+    threads = []
+    for i in range(num_threads):
+        t = Thread(target=ping_worker, args=(queue, ping_results, end_queue))
+        t.start()
+        threads.append(t)
+
+    for thread in threads:
+        thread.join()
 
     LAN_hosts = []
     for res in ping_results:
@@ -235,6 +250,37 @@ def ping_LAN(is_verbose, LAN_possibilities):
             LAN_hosts.append(res)
 
     return LAN_hosts
+
+def input_process(end_queue, num_threads):
+    # https://stackoverflow.com/questions/39501529/python-stop-thread-with-raw-input
+    while True:
+        x = input("")
+        if x == 'q':
+            print("Quitting threads.")
+            for i in range(num_threads):
+                end_queue.put("quit")
+            break
+                
+def ping_worker(queue, ping_results, end_queue):
+    """ Pings an IPv4 address, returning RTT if there is a response. """
+
+    while True:
+        try:
+            try:
+                end = end_queue.get(block=True, timeout = 1)
+                break
+            except Empty:
+                pass
+
+            item = queue.get(block=True, timeout = 1)
+            queue.task_done()
+            
+            RTT = ping_interface.ping(item)
+            if RTT is not None:
+                ping_results.append([item, RTT])
+
+        except Empty:
+            break
 
 def ping(dest_addr):
     """ Pings an IPv4 address, returning RTT if there is a response. """
@@ -257,26 +303,39 @@ def ARP_LAN(LAN_possibilities):
     return found_with_ARP
 
 def open_LAN_ports(ping_hosts, ARP_hosts):
-    
     # Get the list of unique hosts
     ping_hosts = set([host for host, RTT in ping_hosts])
     ARP_hosts = set([host for host, MAC in ARP_hosts])
     only_in_ARP = ARP_hosts - ping_hosts
     all_hosts = list(ping_hosts) + list(only_in_ARP)
 
-    ## THREADPOOL
-    # agents = len(all_hosts)
-    # chunck_size = 1
+    # THREADING
+    # threads = 2 * cpu_count()
+    # print("Port scanning with {} threads.".format(threads))
+    # with multiprocessing.dummy.Pool(threads) as pool:
+    #     open_ports = pool.map(port_scan.port_scan_worker, [host for host in all_hosts])
 
-    # Create a thread for each host, scanning for open ports
-    # open_ports = []
-    # with ThreadPool(processes=agents) as pool:
-    #     open_ports = pool.map(port_scan.get_open_ports, all_hosts, chunck_size)
+    queue = Queue()
+    num_threads = 50
+    ports_to_try = [i for i in range(1,1025)]
+    for addr in all_hosts:
+        for port in ports_to_try:
+            queue.put([addr, port])
+    
+    end_queue = Queue()
+    input_thread = Thread(target=input_process, args=(end_queue, num_threads))
+    input_thread.start()
+    print("Enter 'q' and <ENTER> to end the port scan.")
 
-    threads = 2 * cpu_count()
-    print("Port scanning with {} threads.".format(threads))
-    with multiprocessing.dummy.Pool(threads) as pool:
-        open_ports = pool.map(port_scan.get_open_ports, [host for host in all_hosts])
+    open_ports = []
+    threads = []
+    for i in range(num_threads):
+        t = Thread(target=port_scan.port_scan_worker, args=(queue, open_ports, end_queue))
+        t.start()
+        threads.append(t)
+
+    for thread in threads:
+        thread.join()
 
     return open_ports
 

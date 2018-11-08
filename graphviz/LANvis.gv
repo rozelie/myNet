@@ -1,82 +1,212 @@
 // LAN Visualization
 digraph {
 	node [color=green]
-	"10.0.0.1" [label="Gateway
-10.0.0.1
-RTT: 0.0047
-MAC: 5c:e3:0e:4c:2f:68
+	"10.6.0.1" [label="Gateway
+10.6.0.1
+RTT: 0.0176
+MAC: b8:af:67:61:ca:a1
 Open Ports:[]"]
 	node [color=red]
 	edge [color=red]
-	"10.0.0.21" [label="10.0.0.21
-RTT: 0.0033
-MAC: 48:d6:d5:81:6d:aa
+	"10.6.0.22" [label="10.6.0.22
+RTT: 0.0198
+MAC: 70:81:eb:96:35:f9
 Open Ports:[]"]
-	"10.0.0.21" -> "10.0.0.1"
+	"10.6.0.22" -> "10.6.0.1"
 	node [color=red]
 	edge [color=red]
-	node [color=green]
-	edge [color=green]
-	"10.0.0.27" [label="Local Host
-10.0.0.27
-RTT: 0.0002
+	"10.6.0.38" [label="10.6.0.38
+RTT: 0.0439
+MAC: 44:91:60:38:9d:59
+Open Ports:[]"]
+	"10.6.0.38" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.46" [label="10.6.0.46
+RTT: 0.045
+MAC: cc:44:63:2a:0f:72
+Open Ports:[]"]
+	"10.6.0.46" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.30" [label="10.6.0.30
+RTT: 0.0738
+MAC: e0:c7:67:61:bc:bd
+Open Ports:[]"]
+	"10.6.0.30" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.35" [label="10.6.0.35
+RTT: 0.0946
+MAC: 40:83:1d:a9:eb:43
+Open Ports:[]"]
+	"10.6.0.35" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.21" [label="10.6.0.21
+RTT: 0.1353
+MAC: c0:9f:05:4a:dd:14
+Open Ports:[]"]
+	"10.6.0.21" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.34" [label="10.6.0.34
+RTT: 0.1778
+MAC: e4:b2:fb:22:9e:4f
+Open Ports:[]"]
+	"10.6.0.34" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.53" [label="10.6.0.53
+RTT: 0.2484
+MAC: a8:66:7f:2d:a5:ce
+Open Ports:[]"]
+	"10.6.0.53" -> "10.6.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.6.0.55" [label="10.6.0.55
+RTT: 0.7563
+MAC: 70:f0:87:9a:32:24
+Open Ports:[]"]
+	"10.6.0.55" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.23" [label="10.6.0.23
+RTT: null
+MAC: 8c:85:90:e7:3e:d1
+Open Ports:[]"]
+	"10.6.0.23" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.24" [label="10.6.0.24
+RTT: null
+MAC: 34:02:86:fe:68:61
+Open Ports:[]"]
+	"10.6.0.24" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.25" [label="10.6.0.25
+RTT: null
+MAC: 2c:be:08:bd:d7:c9
+Open Ports:[]"]
+	"10.6.0.25" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.28" [label="10.6.0.28
+RTT: null
+MAC: 64:b0:a6:9f:61:92
+Open Ports:[]"]
+	"10.6.0.28" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.31" [label="10.6.0.31
+RTT: null
+MAC: 84:41:67:82:62:52
+Open Ports:[]"]
+	"10.6.0.31" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.32" [label="10.6.0.32
+RTT: null
+MAC: c4:9d:ed:0f:32:af
+Open Ports:[]"]
+	"10.6.0.32" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.36" [label="10.6.0.36
+RTT: null
+MAC: d0:c5:f3:8b:42:cb
+Open Ports:[]"]
+	"10.6.0.36" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.40" [label="10.6.0.40
+RTT: null
+MAC: 24:f6:77:8e:4e:b9
+Open Ports:[]"]
+	"10.6.0.40" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.47" [label="10.6.0.47
+RTT: null
+MAC: 30:d9:d9:5f:7d:48
+Open Ports:[]"]
+	"10.6.0.47" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.48" [label="10.6.0.48
+RTT: null
+MAC: 30:63:6b:8a:bf:63
+Open Ports:[]"]
+	"10.6.0.48" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.50" [label="10.6.0.50
+RTT: null
+MAC: b0:70:2d:41:38:05
+Open Ports:[]"]
+	"10.6.0.50" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.51" [label="10.6.0.51
+RTT: null
+MAC: cc:61:e5:22:7a:b8
+Open Ports:[]"]
+	"10.6.0.51" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.54" [label="10.6.0.54
+RTT: null
+MAC: 20:ab:37:14:0c:b5
+Open Ports:[]"]
+	"10.6.0.54" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.0.58" [label="10.6.0.58
+RTT: null
+MAC: a8:be:27:90:d2:2f
+Open Ports:[]"]
+	"10.6.0.58" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.3.169" [label="10.6.3.169
+RTT: null
+MAC: 10:40:f3:a1:97:30
+Open Ports:[]"]
+	"10.6.3.169" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.9.32" [label="10.6.9.32
+RTT: null
+MAC: 98:01:a7:ac:c8:95
+Open Ports:[]"]
+	"10.6.9.32" -> "10.6.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.6.11.185" [label="10.6.11.185
+RTT: null
 MAC: c8:21:58:31:7a:bd
 Open Ports:[]"]
-	"10.0.0.27" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.101" [label="10.0.0.101
-RTT: 0.1128
-MAC: 28:cf:e9:1b:ab:15
-Open Ports:[]"]
-	"10.0.0.101" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.110" [label="10.0.0.110
-RTT: 0.0034
-MAC: f8:46:1c:61:89:4a
-Open Ports:[]"]
-	"10.0.0.110" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.128" [label="10.0.0.128
-RTT: 0.0089
-MAC: a0:c9:a0:7e:9a:0d
-Open Ports:[]"]
-	"10.0.0.128" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.176" [label="10.0.0.176
-RTT: 0.0055
-MAC: 00:21:6a:e4:41:5c
-Open Ports:[]"]
-	"10.0.0.176" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.254" [label="10.0.0.254
-RTT: 0.0021
-MAC: 5c:e3:0e:4c:2f:69
-Open Ports:[]"]
-	"10.0.0.254" -> "10.0.0.1"
+	"10.6.11.185" -> "10.6.0.1"
 	node [color=blue]
 	edge [color=blue]
-	"10.0.0.9" [label="10.0.0.9
+	"10.6.11.212" [label="10.6.11.212
 RTT: null
-MAC: cc:08:8d:c5:aa:89
+MAC: d0:81:7a:b5:3e:a8
 Open Ports:[]"]
-	"10.0.0.9" -> "10.0.0.1"
+	"10.6.11.212" -> "10.6.0.1"
 	node [color=blue]
 	edge [color=blue]
-	"10.0.0.26" [label="10.0.0.26
+	"10.6.13.61" [label="10.6.13.61
 RTT: null
-MAC: 2c:56:dc:3f:2a:17
+MAC: 98:fe:94:4d:45:5a
 Open Ports:[]"]
-	"10.0.0.26" -> "10.0.0.1"
+	"10.6.13.61" -> "10.6.0.1"
 	node [color=blue]
 	edge [color=blue]
-	"10.0.0.137" [label="10.0.0.137
+	"10.6.13.194" [label="10.6.13.194
 RTT: null
-MAC: 04:03:d6:2d:dc:b9
+MAC: 60:f8:1d:b9:07:08
 Open Ports:[]"]
-	"10.0.0.137" -> "10.0.0.1"
+	"10.6.13.194" -> "10.6.0.1"
 }

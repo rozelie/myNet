@@ -15,7 +15,6 @@ def chk(data):
     x = (x >> 16) + (x & 0xFFFF)
     return struct.pack('<H', ~x & 0xFFFF)
 
-
 def ping(addr, timeout=1, number=1, data=b''):
     with socket.socket(socket.AF_INET, socket.SOCK_RAW, socket.IPPROTO_ICMP) as conn:
         payload = struct.pack('!HH', random.randrange(0, 65536), number) + data
