@@ -5,7 +5,6 @@ import sys
 from datetime import datetime
 from queue import Queue, Empty
 
-
 def port_scan_worker(queue, open_ports, end_queue):
     """ """
     # Adapted from https://www.pythonforbeginners.com/code-snippets-source-code/port-scanner-in-python
@@ -13,7 +12,7 @@ def port_scan_worker(queue, open_ports, end_queue):
     while True:
         try:
             try:
-                end = end_queue.get(block=True, timeout = 1)
+                end_queue.get(block=True, timeout = 1)
                 break
             except Empty:
                 pass

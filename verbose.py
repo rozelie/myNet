@@ -44,6 +44,9 @@ def LAN_ARP_results(ARP_time_elapsed, ARP_hosts, local_IP, gateway_IP):
         print("{:16} {:18} {}".format(host, MAC, description))
     print()
 
+def LAN_port_scan_start():
+    print("Beginning LAN port scanning.")
+
 def LAN_port_scan_results(port_scan_elapsed, open_ports):
     print("Port Scan Elapsed Time:", port_scan_elapsed, "seconds\n")
     # print("{:16} {:18} {}".format("Host", "MAC", "Description"))  
