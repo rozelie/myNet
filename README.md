@@ -5,12 +5,12 @@
 usage: myNet.py [-h] [-l] [-b] [-a] [-vis] [-v]
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -l, --lan          view LAN information
-  -b, --beyond       view information about networks beyond the LAN [in developlment]
-  -a, --approximate  determine approximate location of machine [in developlment]
-  -vis, --visualize  visualize information from -l or -b
-  -v, --verbose      increase verbosity of output
+- -h, --help         show this help message and exit
+- -l, --lan          view LAN information
+- -b, --beyond       view information about networks beyond the LAN [in development]
+- -a, --approximate  determine approximate location of machine [in development]
+- -vis, --visualize  visualize information from -l or -b
+- -v, --verbose      increase verbosity of output
 
 ## Sources
 - netifaces: https://pypi.org/project/netifaces/
