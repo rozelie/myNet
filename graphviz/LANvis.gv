@@ -3,96 +3,40 @@ digraph {
 	node [color=green]
 	"10.0.0.1" [label="Gateway
 10.0.0.1
-RTT: 0.0023
+RTT: 0.0049
 MAC: 5c:e3:0e:4c:2f:68
 Open Ports:443"]
+	node [color=red]
+	edge [color=red]
+	"10.0.0.21" [label="10.0.0.21
+RTT: 0.0017
+MAC: 48:d6:d5:81:6d:aa
+Open Ports:[]"]
+	"10.0.0.21" -> "10.0.0.1"
 	node [color=red]
 	edge [color=red]
 	node [color=green]
 	edge [color=green]
 	"10.0.0.27" [label="Local Host
 10.0.0.27
-RTT: 0.0053
+RTT: 0.0001
 MAC: c8:21:58:31:7a:bd
 Open Ports:[]"]
 	"10.0.0.27" -> "10.0.0.1"
 	node [color=red]
 	edge [color=red]
-	"10.0.0.21" [label="10.0.0.21
-RTT: 0.0084
-MAC: 48:d6:d5:81:6d:aa
-Open Ports:[]"]
-	"10.0.0.21" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.9" [label="10.0.0.9
-RTT: 0.0598
-MAC: cc:08:8d:c5:aa:89
-Open Ports:[]"]
-	"10.0.0.9" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.101" [label="10.0.0.101
-RTT: 0.0993
-MAC: 28:cf:e9:1b:ab:15
-Open Ports:[]"]
-	"10.0.0.101" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.110" [label="10.0.0.110
-RTT: 0.0017
-MAC: f8:46:1c:61:89:4a
-Open Ports:[]"]
-	"10.0.0.110" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.182" [label="10.0.0.182
-RTT: 0.001
-MAC: 0c:80:63:4d:38:ea
-Open Ports:80"]
-	"10.0.0.182" -> "10.0.0.1"
-	node [color=red]
-	edge [color=red]
-	"10.0.0.185" [label="10.0.0.185
-RTT: 0.0027
-MAC: 28:16:a8:28:04:01
-Open Ports:[]"]
-	"10.0.0.185" -> "10.0.0.1"
+	"10.0.0.176" [label="10.0.0.176
+RTT: 0.0022
+MAC: 00:21:6a:e4:41:5c
+Open Ports:515"]
+	"10.0.0.176" -> "10.0.0.1"
 	node [color=red]
 	edge [color=red]
 	"10.0.0.254" [label="10.0.0.254
-RTT: 0.0023
+RTT: 0.0053
 MAC: 5c:e3:0e:4c:2f:69
 Open Ports:[]"]
 	"10.0.0.254" -> "10.0.0.1"
-	node [color=blue]
-	edge [color=blue]
-	"10.0.0.7" [label="10.0.0.7
-RTT: null
-MAC: b4:f7:a1:bf:99:25
-Open Ports:[]"]
-	"10.0.0.7" -> "10.0.0.1"
-	node [color=blue]
-	edge [color=blue]
-	"10.0.0.48" [label="10.0.0.48
-RTT: null
-MAC: 9c:b6:d0:b9:54:df
-Open Ports:[]"]
-	"10.0.0.48" -> "10.0.0.1"
-	node [color=blue]
-	edge [color=blue]
-	"10.0.0.62" [label="10.0.0.62
-RTT: null
-MAC: 64:76:ba:da:46:fc
-Open Ports:[]"]
-	"10.0.0.62" -> "10.0.0.1"
-	node [color=blue]
-	edge [color=blue]
-	"10.0.0.94" [label="10.0.0.94
-RTT: null
-MAC: c8:1e:e7:da:1d:98
-Open Ports:[]"]
-	"10.0.0.94" -> "10.0.0.1"
 	node [color=blue]
 	edge [color=blue]
 	"10.0.0.128" [label="10.0.0.128
@@ -109,9 +53,9 @@ Open Ports:[]"]
 	"10.0.0.137" -> "10.0.0.1"
 	node [color=blue]
 	edge [color=blue]
-	"10.0.0.176" [label="10.0.0.176
+	"10.0.0.185" [label="10.0.0.185
 RTT: null
-MAC: 00:21:6a:e4:41:5c
+MAC: 28:16:a8:28:04:01
 Open Ports:[]"]
-	"10.0.0.176" -> "10.0.0.1"
+	"10.0.0.185" -> "10.0.0.1"
 }

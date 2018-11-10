@@ -1,5 +1,7 @@
 import argparse
+import os
 import lan
+import beyond
 
 def get_args():
     """ Create command-line arguments and return arguments provided by user. """
@@ -20,12 +22,17 @@ def main():
 
     if not args.lan and not args.beyond and not args.approximate:
         print("Must choose one or more of [-l, -b, -a]")
+    else:
+        if args.lan:
+            lan.retrieve_LAN_info(args.verbose, args.visualize)
 
-    if args.lan:
-        lan.LAN_hosts(args.verbose, args.visualize)
-    if args.beyond:
-        pass
-    if args.approximate:
-        pass
+        if args.beyond:
+            beyond.retrieve_beyond_info()
+
+        if args.approximate:
+            pass
+
+    os._exit(1)
+    
 
 main()
