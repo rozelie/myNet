@@ -3,16 +3,9 @@ import itertools
 def bin_combinations(bin_str_len):
     """ Returns list of strings of all of the possible binary combinations """
 
-    bin_possibilities = []
-
-    # Only try subnet masks with less than 12 alterable bits as to not 
-    # ping or arp more than 2^13 (8192) addresses
-    if bin_str_len < 13:
-        # Get all of the binary possibilities of bin_str_len bits
-        bin_possibilities = list(itertools.product(["0", "1"], repeat=bin_str_len))
-        bin_possibilities = [''.join(i) for i in bin_possibilities]
-    else:
-        raise Exception("LAN subnet too large to ping.")
+    # Get all of the binary possibilities of bin_str_len bits
+    bin_possibilities = list(itertools.product(["0", "1"], repeat=bin_str_len))
+    bin_possibilities = [''.join(i) for i in bin_possibilities]
 
     return bin_possibilities
 

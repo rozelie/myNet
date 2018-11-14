@@ -10,7 +10,7 @@ def retrieve_beyond_info():
     return 0
 
 def get_hops():
-    """Run traceroute on a number of servers, returning information about the hops"""
+    """Run traceroute on a number of servers, returning information about the hops."""
     queue = Queue()
     servers = ["google.com", "spotify.com", "stackoverflow.com"]
     for addr in servers:
