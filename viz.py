@@ -7,10 +7,10 @@ def visualize_LAN(LAN_Dict):
     
     # Create the gateway node
     try:
-        gateway_IP = [host for host in LAN_Dict if LAN_Dict[host][2] == "Gateway"][0]
-        gateway_RTT, gateway_MAC, gateway_desc, gateway_open_ports = LAN_Dict[gateway_IP]
-        gateway_label = "Gateway\n{}\nRTT: {}\nMAC: {}\nOpen Ports:{}".format(gateway_IP, gateway_RTT,
-                                                                        gateway_MAC, gateway_open_ports)
+        gateway_IP = [host for host in LAN_Dict if LAN_Dict[host][4] == "Gateway"][0]
+        gateway_RTT, gateway_MAC, gateway_manuf, gateway_comment, gateway_desc, gateway_open_ports = LAN_Dict[gateway_IP]
+        gateway_label = "Gateway\n{}\nRTT: {}\nMAC: {}\nManufacturer: {}\nProduct Description: {}\nOpen Ports:{}".format(gateway_IP, gateway_RTT, gateway_MAC,
+                                                                                                                        gateway_manuf, gateway_comment, gateway_open_ports)
 
         # Do not include the gateway node again
         del LAN_Dict[gateway_IP]
@@ -27,7 +27,7 @@ def visualize_LAN(LAN_Dict):
     nodes_created = 0
     for host in LAN_Dict:
         if nodes_created <= max_nodes:
-            RTT, MAC, desc, open_ports = LAN_Dict[host]
+            RTT, MAC, manuf, comment, desc, open_ports = LAN_Dict[host]
 
             # Color hosts found only through ARP blue, otherwise red
             if RTT == "null":
@@ -39,11 +39,11 @@ def visualize_LAN(LAN_Dict):
 
             host_label = ""
             if desc == "Local Host":
-                host_label = "Local Host\n{}\nRTT: {}\nMAC: {}\nOpen Ports:{}".format(host, RTT, MAC, open_ports)
+                host_label = "Local Host\n{}\nRTT: {}\nMAC: {}\nManufacturer: {}\nProduct Description: {}\nOpen Ports:{}".format(host, RTT, MAC, manuf, comment, open_ports)
                 dot.attr('node', color='green')
                 dot.attr('edge', color='green')
             else:
-                host_label = "{}\nRTT: {}\nMAC: {}\nOpen Ports:{}".format(host, RTT, MAC, open_ports)
+                host_label = "{}\nRTT: {}\nMAC: {}\nManufacturer: {}\nProduct Description: {}\nOpen Ports:{}".format(host, RTT, MAC, manuf, comment, open_ports)
 
             dot.node(host, host_label)
             dot.edge(host, gateway_IP)

@@ -9,7 +9,7 @@ def get_thread_res(inputs_queue, res_obj, num_threads, worker_func):
     end_queue = Queue()
     input_thread = Thread(target=worker.input_thread, args=(end_queue, num_threads))
     input_thread.start()
-    print("Enter 'q' and <ENTER> to end the traceroute.")
+    print("Enter 'q' and <ENTER> to end the threads.")
 
     # Create threads that accumulate results in res_obj
     threads = []

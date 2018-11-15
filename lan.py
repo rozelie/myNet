@@ -3,6 +3,7 @@ from threading import Thread
 from queue import Queue, Empty
 import netifaces # https://pypi.org/project/netifaces/
 import arpreq # https://pypi.org/project/arpreq/
+from manuf import manuf as mac_manuf
 
 # Local Files
 import viz
@@ -120,14 +121,14 @@ def LAN_possibilities(local_IP, gatewayMask):
     changeable_bit_length = 32 - mask_end_index
     bin_possibilities = bin_tools.bin_combinations(changeable_bit_length)
 
+    # Exclude the first and last addresses of the subnet: x.x.x.0 and x.x.x.255
+    # x.x.x.0 is usually not used by convention and x.x.x.255 is reserved for a broadcast address
+    bin_possibilities = bin_possibilities[1:-1]
+
     # Get the entire binary representation of all possible LAN IPv4 addresses
     LAN_possibilities_bin = []
     for combo in bin_possibilities:
-        host_bin = anded_bitStr[:mask_end_index] + combo
-
-        # Exclude addresses that end in 0 or 255
-        if host_bin[24:32] != "11111111" and host_bin[24:32] != "00000000":
-            LAN_possibilities_bin.append(anded_bitStr[:mask_end_index] + combo)
+        LAN_possibilities_bin.append(anded_bitStr[:mask_end_index] + combo)
 
     # Transform binary addresses to IPv4
     LAN_possibilities = [bin_tools.bin_to_dotted_quad(i) for i in LAN_possibilities_bin]
@@ -157,11 +158,16 @@ def ARP_LAN(LAN_possibilities):
     """Returns IPv4 and MAC addresses of the ARP cache."""
 
     found_with_ARP = []
+    mac_parser = mac_manuf.MacParser(update=True)
     for ip in LAN_possibilities:
         res = arpreq.arpreq(ip)
         if res is not None:
-            found_with_ARP.append([ip, res])
+            manuf = mac_parser.get_manuf(res)
+            comment = mac_parser.get_comment(res)
 
+            found_with_ARP.append([ip, res, manuf, comment])
+
+    
     return found_with_ARP
 
 def open_LAN_ports(ping_hosts, ARP_hosts):
@@ -169,7 +175,7 @@ def open_LAN_ports(ping_hosts, ARP_hosts):
 
     # Get the list of unique hosts
     ping_hosts = set([host for host, RTT in ping_hosts])
-    ARP_hosts = set([host for host, MAC in ARP_hosts])
+    ARP_hosts = set([host for host, MAC, manuf, comment in ARP_hosts])
     only_in_ARP = ARP_hosts - ping_hosts
     all_hosts = list(ping_hosts) + list(only_in_ARP)
 
@@ -187,7 +193,9 @@ def open_LAN_ports(ping_hosts, ARP_hosts):
     return open_ports
 
 def create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway):
-    """Return dictionary with LAN info in the form of: {host : [RTT, MAC, Description, Open Ports]}."""
+    """Return dictionary with LAN info in the form of: 
+       {host : [RTT, MAC, Manfuacturer, Product Description, Description, Open Ports]}.
+    """
     
     LAN_dict = {}
     # Add description and RTT from ping_hosts
@@ -198,14 +206,16 @@ def create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway):
         elif host == gateway:
             description = "Gateway"
         
-        LAN_dict[host] = [str(round(RTT, 4)), '', description, []]
+        LAN_dict[host] = [str(round(RTT, 4)), '', '', '', description, []]
 
     # Add MAC and new hosts from ARP_hosts
-    for host, MAC in ARP_hosts:
+    for host, MAC, manuf, comment in ARP_hosts:
         if host in LAN_dict:
             LAN_dict[host][1] = MAC
+            LAN_dict[host][2] = manuf
+            LAN_dict[host][3] = comment
         else:
-            LAN_dict[host] = ["null", MAC, '', []]
+            LAN_dict[host] = ["null", MAC, manuf, comment, '', []]
 
     # Add found open ports
     for host_info in open_ports:
@@ -220,8 +230,8 @@ def create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway):
                 ports_str += ports[i]
 
         if host in LAN_dict:
-            LAN_dict[host][3] = ports
+            LAN_dict[host][5] = ports
         else:
-            LAN_dict[host] = ["null", '', '', ports]
+            LAN_dict[host] = ["null", '', '', '', '', ports]
 
     return LAN_dict
