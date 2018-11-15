@@ -3,121 +3,128 @@ digraph {
 	node [color=green]
 	"172.30.0.6" [label="Gateway
 172.30.0.6
-RTT: 0.0119
-MAC: 
+RTT: 0.0098
+MAC: 00:00:0c:07:ac:02
 Open Ports:[]"]
 	node [color=red]
 	edge [color=red]
-	"172.30.0.5" [label="172.30.0.5
+	"172.30.0.3" [label="172.30.0.3
+RTT: 0.0036
+MAC: 
+Open Ports:[]"]
+	"172.30.0.3" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.13" [label="172.30.0.13
+RTT: 0.0017
+MAC: 
+Open Ports:[]"]
+	"172.30.0.13" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.1" [label="172.30.0.1
+RTT: 0.0027
+MAC: 
+Open Ports:[]"]
+	"172.30.0.1" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.4" [label="172.30.0.4
+RTT: 0.0026
+MAC: 
+Open Ports:[]"]
+	"172.30.0.4" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.2" [label="172.30.0.2
+RTT: 0.0063
+MAC: 
+Open Ports:[]"]
+	"172.30.0.2" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.7" [label="172.30.0.7
 RTT: 0.0001
-MAC: 00:3a:7d:aa:66:00
+MAC: 
+Open Ports:444"]
+	"172.30.0.7" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.9" [label="172.30.0.9
+RTT: 0.0072
+MAC: 
+Open Ports:[]"]
+	"172.30.0.9" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.0.5" [label="172.30.0.5
+RTT: 0.0068
+MAC: 
 Open Ports:[]"]
 	"172.30.0.5" -> "172.30.0.6"
 	node [color=red]
 	edge [color=red]
+	"172.30.0.8" [label="172.30.0.8
+RTT: 0.0056
+MAC: 
+Open Ports:[]"]
+	"172.30.0.8" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
 	"172.30.0.10" [label="172.30.0.10
-RTT: 0.0088
-MAC: a0:36:9f:56:16:4f
+RTT: 0.0107
+MAC: 
 Open Ports:[]"]
 	"172.30.0.10" -> "172.30.0.6"
 	node [color=red]
 	edge [color=red]
 	"172.30.0.12" [label="172.30.0.12
-RTT: 0.0044
-MAC: a8:9d:21:03:91:e4
+RTT: 0.0118
+MAC: 
 Open Ports:[]"]
 	"172.30.0.12" -> "172.30.0.6"
 	node [color=red]
 	edge [color=red]
-	"172.30.0.7" [label="172.30.0.7
-RTT: 0.0001
-MAC: 10:05:ca:bf:8a:ed
-Open Ports:[]"]
-	"172.30.0.7" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.2" [label="172.30.0.2
-RTT: 0.0093
-MAC: 24:b6:57:46:80:00
-Open Ports:[]"]
-	"172.30.0.2" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.4" [label="172.30.0.4
-RTT: 0.0
-MAC: 00:62:ec:d7:43:c0
-Open Ports:[]"]
-	"172.30.0.4" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.3" [label="172.30.0.3
-RTT: 0.0116
-MAC: 00:00:0c:07:ac:01
-Open Ports:[]"]
-	"172.30.0.3" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.1" [label="172.30.0.1
-RTT: 0.0105
-MAC: 24:b6:57:47:18:00
-Open Ports:[]"]
-	"172.30.0.1" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.8" [label="172.30.0.8
-RTT: 0.0132
-MAC: 80:e0:1d:23:ed:ad
-Open Ports:[]"]
-	"172.30.0.8" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.9" [label="172.30.0.9
-RTT: 0.0012
-MAC: a0:36:9f:4e:db:3f
-Open Ports:[]"]
-	"172.30.0.9" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
-	"172.30.0.13" [label="172.30.0.13
-RTT: 0.0065
-MAC: 70:1f:53:b6:df:81
-Open Ports:[]"]
-	"172.30.0.13" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
 	"172.30.2.193" [label="172.30.2.193
-RTT: 0.9372
-MAC: 40:16:3b:30:3b:8b
+RTT: 0.1105
+MAC: 
 Open Ports:[]"]
 	"172.30.2.193" -> "172.30.0.6"
 	node [color=red]
 	edge [color=red]
-	"172.30.2.230" [label="172.30.2.230
-RTT: 0.0787
-MAC: f0:79:60:d1:1d:1a
-Open Ports:[]"]
-	"172.30.2.230" -> "172.30.0.6"
-	node [color=red]
-	edge [color=red]
 	"172.30.3.82" [label="172.30.3.82
-RTT: 0.0683
+RTT: 0.007
 MAC: 48:e2:44:1b:7d:09
 Open Ports:[]"]
 	"172.30.3.82" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
-	"172.30.0.11" [label="172.30.0.11
-RTT: null
-MAC: 00:00:5e:00:01:02
+	node [color=red]
+	edge [color=red]
+	"172.30.4.201" [label="172.30.4.201
+RTT: 0.1185
+MAC: 34:ab:37:9d:31:25
 Open Ports:[]"]
-	"172.30.0.11" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
-	"172.30.0.251" [label="172.30.0.251
-RTT: null
-MAC: bc:a9:20:8e:5a:96
+	"172.30.4.201" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.5.253" [label="172.30.5.253
+RTT: 0.0223
+MAC: c0:b6:58:1e:43:1d
 Open Ports:[]"]
-	"172.30.0.251" -> "172.30.0.6"
+	"172.30.5.253" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.8.2" [label="172.30.8.2
+RTT: 0.1159
+MAC: b8:41:a4:e8:53:5b
+Open Ports:[]"]
+	"172.30.8.2" -> "172.30.0.6"
+	node [color=red]
+	edge [color=red]
+	"172.30.8.195" [label="172.30.8.195
+RTT: 0.0319
+MAC: 7c:01:91:67:14:36
+Open Ports:[]"]
+	"172.30.8.195" -> "172.30.0.6"
 	node [color=blue]
 	edge [color=blue]
 	"172.30.1.106" [label="172.30.1.106
@@ -127,41 +134,6 @@ Open Ports:[]"]
 	"172.30.1.106" -> "172.30.0.6"
 	node [color=blue]
 	edge [color=blue]
-	"172.30.1.112" [label="172.30.1.112
-RTT: null
-MAC: 30:07:4d:5d:3b:6b
-Open Ports:[]"]
-	"172.30.1.112" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
-	"172.30.1.238" [label="172.30.1.238
-RTT: null
-MAC: 8c:f5:a3:71:2f:87
-Open Ports:[]"]
-	"172.30.1.238" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
-	"172.30.2.63" [label="172.30.2.63
-RTT: null
-MAC: 20:ab:37:7a:80:4f
-Open Ports:[]"]
-	"172.30.2.63" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
-	"172.30.3.23" [label="172.30.3.23
-RTT: null
-MAC: 1c:91:48:64:56:e9
-Open Ports:[]"]
-	"172.30.3.23" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
-	"172.30.3.47" [label="172.30.3.47
-RTT: null
-MAC: 40:4e:36:d2:c0:29
-Open Ports:[]"]
-	"172.30.3.47" -> "172.30.0.6"
-	node [color=blue]
-	edge [color=blue]
 	"172.30.3.115" [label="172.30.3.115
 RTT: null
 MAC: fc:db:b3:2a:f3:d5
@@ -169,11 +141,60 @@ Open Ports:[]"]
 	"172.30.3.115" -> "172.30.0.6"
 	node [color=blue]
 	edge [color=blue]
-	"172.30.4.15" [label="172.30.4.15
+	"172.30.6.53" [label="172.30.6.53
 RTT: null
-MAC: 5c:1d:d9:ef:0e:3f
+MAC: 08:f6:9c:35:9f:ff
 Open Ports:[]"]
-	"172.30.4.15" -> "172.30.0.6"
+	"172.30.6.53" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.6.199" [label="172.30.6.199
+RTT: null
+MAC: e0:5f:45:37:f4:bf
+Open Ports:[]"]
+	"172.30.6.199" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.7.237" [label="172.30.7.237
+RTT: null
+MAC: 98:01:a7:49:35:12
+Open Ports:[]"]
+	"172.30.7.237" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.8.204" [label="172.30.8.204
+RTT: null
+MAC: 04:69:f8:22:bf:b6
+Open Ports:[]"]
+	"172.30.8.204" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.9.106" [label="172.30.9.106
+RTT: null
+MAC: e4:e0:a6:20:2c:8b
+Open Ports:[]"]
+	"172.30.9.106" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.9.168" [label="172.30.9.168
+RTT: null
+MAC: bc:9f:ef:d9:21:32
+Open Ports:[]"]
+	"172.30.9.168" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.10.7" [label="172.30.10.7
+RTT: null
+MAC: 70:81:eb:8e:b5:a6
+Open Ports:[]"]
+	"172.30.10.7" -> "172.30.0.6"
+	node [color=blue]
+	edge [color=blue]
+	"172.30.11.74" [label="172.30.11.74
+RTT: null
+MAC: 80:be:05:3d:87:80
+Open Ports:[]"]
+	"172.30.11.74" -> "172.30.0.6"
 	node [color=blue]
 	edge [color=blue]
 	"172.30.44.118" [label="172.30.44.118
