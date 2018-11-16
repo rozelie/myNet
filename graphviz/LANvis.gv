@@ -1,0 +1,84 @@
+// LAN Visualization
+digraph {
+	node [color=green]
+	"10.0.0.1" [label="Gateway
+RTT: 10.0.0.1
+MAC: 0.005
+Manufacturer: 5c:e3:0e:4c:2f:68
+Product Description: ArrisGro
+Open Ports:None"]
+	node [color=red]
+	edge [color=red]
+	node [color=green]
+	edge [color=green]
+	"10.0.0.27" [label="Local Host
+RTT: 0.0001
+MAC: c8:21:58:31:7a:bd
+Manufacturer: IntelCor
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.27" -> "10.0.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.0.0.21" [label="10.0.0.21
+RTT: 0.0089
+MAC: 48:d6:d5:81:6d:aa
+Manufacturer: Google
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.21" -> "10.0.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.0.0.9" [label="10.0.0.9
+RTT: 0.1326
+MAC: cc:08:8d:c5:aa:89
+Manufacturer: Apple
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.9" -> "10.0.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.0.0.108" [label="10.0.0.108
+RTT: 0.0068
+MAC: 28:16:a8:28:03:ff
+Manufacturer: Microsof
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.108" -> "10.0.0.1"
+	node [color=red]
+	edge [color=red]
+	"10.0.0.254" [label="10.0.0.254
+RTT: 0.0019
+MAC: 5c:e3:0e:4c:2f:69
+Manufacturer: ArrisGro
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.254" -> "10.0.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.0.0.128" [label="10.0.0.128
+RTT: null
+MAC: a0:c9:a0:7e:9a:0d
+Manufacturer: MurataMa
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.128" -> "10.0.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.0.0.137" [label="10.0.0.137
+RTT: null
+MAC: 04:03:d6:2d:dc:b9
+Manufacturer: Nintendo
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.137" -> "10.0.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.0.0.176" [label="10.0.0.176
+RTT: null
+MAC: 00:21:6a:e4:41:5c
+Manufacturer: IntelCor
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.176" -> "10.0.0.1"
+}
