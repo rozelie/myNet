@@ -1,4 +1,5 @@
 """
+http://staff.washington.edu/jon/python-course/python_traceroute.py
 Phllip Calvin's python-traceroute.py, from http://gist.github.com/502451
 based on Leonid Grinberg's traceroute, from
 http://blog.ksplice.com/2010/07/learning-by-doing-writing-your-own-traceroute-in-8-easy-steps/
@@ -10,7 +11,7 @@ import sys
 import time
 
 def run_trace(dest_name, max_hops=30):
-    print("Tracing to {} with {} maximum hops.".format(dest_name, max_hops))
+    # print("Tracing to {} with {} maximum hops.".format(dest_name, max_hops))
     dest_addr = socket.gethostbyname(dest_name)
     port = 33434
     icmp = socket.getprotobyname('icmp')
