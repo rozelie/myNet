@@ -62,11 +62,13 @@ def retrieve_LAN_info(is_verbose, is_visualized):
 
         # Create dictionary about the LAN for visualization
         LAN_Dict = create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway)
+
+        # Create graphviz representation of the LAN
         if is_visualized:
             lan_viz(LAN_Dict).visualize_LAN()
     
 def basic_info():
-    """Returns the local IP, gateway, and gateway mask if they are found."""
+    """Returns the local IP, gateway mask, and interface if they are found"""
 
     # Returns names of local interfaces
     interfaces = netifaces.interfaces()

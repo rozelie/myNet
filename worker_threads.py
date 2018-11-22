@@ -16,7 +16,7 @@ def input_thread(end_queue, num_threads):
         user_in = input("")
         if user_in == 'q':
             print("Quitting threads.")
-            for i in range(num_threads + 1):
+            for _ in range(num_threads + 1):
                 end_queue.put("quit")
             break
                 
@@ -68,8 +68,9 @@ def port_scan_worker(queue, open_ports, end_queue):
         except Empty:
             break
 
-def trace_worker(queue, found_hops, end_queue):
+def trace_worker(queue, host_trace_res, end_queue):
     """Runs traceroute of a host, returning info about found hops"""
+    max_hops = 10
 
     while True:
         try:
@@ -82,17 +83,24 @@ def trace_worker(queue, found_hops, end_queue):
             host = queue.get(block=True, timeout = 1)
             queue.task_done()
 
-            res = trace_route.run_trace(host, 7)
+            res = trace_route.run_trace(host, max_hops)
 
-            # Add to found_host dict the number of occurances and RTT
+            # Add to dict the traced hosts and their and RTT
             for found_host, RTT in res:
-                if found_host in found_hops:
-                    host_count, avg_RTT = found_hops[found_host] 
-                    host_count += 1
-                    avg_RTT = (avg_RTT + RTT) / host_count
-                    found_hops[found_host] = [host_count, avg_RTT]
+                hop_info = [found_host, RTT]
+                if host in host_trace_res:
+                    hop_already_found = False
+
+                    for host_found, _ in host_trace_res[host]:
+                        if found_host == host_found:
+                            hop_already_found = True
+                            break
+
+                    if not hop_already_found:
+                        host_trace_res[host].append(hop_info)
+
                 else:
-                    found_hops[found_host] = [1, RTT]
+                    host_trace_res[host] = [hop_info]
 
             print(host, "traceroute completed.")
 

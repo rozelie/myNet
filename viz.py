@@ -1,13 +1,13 @@
 from graphviz import Digraph
+import lan
 
 class lan_viz():
     """Creates graphviz diagram for the LAN visualization"""
 
-    dot = Digraph(comment="LAN Visualization", format="png", engine="circo")
-    info_to_display = "{}\nRTT: {}\nMAC: {}\nManufacturer: {}\nProduct Description: {}\nOpen Ports:{}"
-
     def __init__(self, LAN_Dict_in):
         self.LAN_Dict = LAN_Dict_in
+        self.dot = Digraph(comment="LAN Visualization", format="png", engine="circo")
+        self.node_info = "{}\nRTT: {}\nMAC: {}\nManufacturer: {}\nProduct Description: {}\nOpen Ports:{}"
 
     def visualize_LAN(self):
         """Create Graphviz network from LAN hosts and display as image."""
@@ -31,8 +31,8 @@ class lan_viz():
         
         try:
             IP = [host for host in self.LAN_Dict if self.LAN_Dict[host][4] == node_desc][0]
-            RTT, MAC, manuf, comment, desc, open_ports = self.LAN_Dict[IP]
-            label = self.info_to_display.format(node_desc, IP, RTT, MAC, manuf, comment, open_ports)
+            RTT, MAC, manuf, comment, _, open_ports = self.LAN_Dict[IP]
+            label = self.node_info.format(node_desc, IP, RTT, MAC, manuf, comment, open_ports)
 
             # Do not include the node again
             del self.LAN_Dict[IP]
@@ -53,7 +53,7 @@ class lan_viz():
         nodes_created = 0
         for host in self.LAN_Dict:
             if nodes_created <= max_nodes:
-                RTT, MAC, manuf, comment, desc, open_ports = self.LAN_Dict[host]
+                RTT, MAC, manuf, comment, _, open_ports = self.LAN_Dict[host]
 
                 # Color hosts found only through ARP blue, otherwise red
                 if RTT == "null":
@@ -63,7 +63,7 @@ class lan_viz():
                     self.dot.attr('node', color='red')
                     self.dot.attr('edge', color='red')
 
-                host_label = self.info_to_display.format(host, RTT, MAC, manuf, comment, open_ports)
+                host_label = self.node_info.format(host, RTT, MAC, manuf, comment, open_ports)
 
                 self.dot.node(host, host_label)
                 self.dot.edge(local_host_IP, host)
@@ -71,3 +71,34 @@ class lan_viz():
                 nodes_created += 1
             else:
                 break
+
+class beyond_viz():
+    """Creates graphviz diagram for the traceroute visualization"""
+
+    def __init__(self, trace_res):
+        self.trace_res = trace_res
+        self.dot = Digraph(comment="Beyond Visualization", format="png")
+        self.node_info = "{}\nRTT: {}"
+
+        # Get local IP for future usage
+        self.local_IP, _, __ = lan.basic_info()
+ 
+
+    def visualize_traceroute(self):
+        """Create diagram of traceroute nodes"""
+
+        # Create the local host node
+        self.dot.attr('node', color='green')
+        self.dot.node(self.local_IP, "Local Host\n" + self.local_IP)
+
+        for server in self.trace_res:
+            last_host = self.local_IP
+
+            for host, RTT in self.trace_res[server]:
+                host_label = self.node_info.format(host, RTT)
+                self.dot.node(host, host_label)
+                self.dot.edge(last_host, host)
+                last_host = host
+
+        # Save and display graph
+        self.dot.render('graphviz/beyond_vis.gv', view=True)

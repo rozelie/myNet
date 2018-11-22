@@ -13,7 +13,7 @@ def get_thread_res(inputs_queue, res_obj, num_threads, worker_func):
 
     # Create threads that accumulate results in res_obj
     threads = []
-    for i in range(num_threads):
+    for _ in range(num_threads):
         t = Thread(target=worker_func, args=(inputs_queue, res_obj, end_queue))
         t.start()
         threads.append(t)
