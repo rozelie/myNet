@@ -32,7 +32,7 @@ class lan_viz():
         try:
             IP = [host for host in self.LAN_Dict if self.LAN_Dict[host][4] == node_desc][0]
             RTT, MAC, manuf, comment, _, open_ports = self.LAN_Dict[IP]
-            label = self.node_info.format(node_desc, IP, RTT, MAC, manuf, comment, open_ports)
+            label = self.node_info.format(node_desc + " (" + IP + ")", RTT, MAC, manuf, comment, open_ports)
 
             # Do not include the node again
             del self.LAN_Dict[IP]
