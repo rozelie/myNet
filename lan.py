@@ -6,7 +6,7 @@ import arpreq # https://pypi.org/project/arpreq/
 from manuf import manuf as mac_manuf
 
 # Local Files
-import viz
+from viz import lan_viz
 import verbose
 import ping as ping_interface
 import worker_threads as worker
@@ -63,7 +63,7 @@ def retrieve_LAN_info(is_verbose, is_visualized):
         # Create dictionary about the LAN for visualization
         LAN_Dict = create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway)
         if is_visualized:
-            viz.visualize_LAN(LAN_Dict)
+            lan_viz(LAN_Dict).visualize_LAN()
     
 def basic_info():
     """Returns the local IP, gateway, and gateway mask if they are found."""
