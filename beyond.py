@@ -7,13 +7,13 @@ import create_threads
 from viz import beyond_viz
 
 def retrieve_beyond_info():
+    """Initiates traceroutes and passes results to generate visualization"""
     host_trace_res = get_trace_paths()
-    print(host_trace_res)
+    
     beyond_viz(host_trace_res).visualize_traceroute()
     
-
 def get_trace_paths():
-    """Run traceroute on a number of servers, returning information about the hops."""
+    """Run traceroute on a number of servers, returning information about the hops"""
     queue = Queue()
     servers = ["google.com", "spotify.com", "stackoverflow.com"]
     for addr in servers:

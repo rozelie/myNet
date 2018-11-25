@@ -4,7 +4,7 @@ import lan
 import beyond
 
 def get_args():
-    """ Create command-line arguments and return arguments provided by user. """
+    """Create command-line arguments and return arguments provided by user"""
 
     parser = argparse.ArgumentParser()
     parser.add_argument("-l", "--lan", help="view LAN information", action='store_true')
@@ -16,7 +16,7 @@ def get_args():
     return parser.parse_args()
 
 def main():
-    """ Driver function - determines functionality based on command-line args. """
+    """Driver function - determines functionality based on command-line args"""
 
     args = get_args()
 

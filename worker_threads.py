@@ -22,7 +22,6 @@ def input_thread(end_queue, num_threads):
                 
 def ping_worker(queue, ping_results, end_queue):
     """ Pings an IPv4 address, returning RTT if there is a response. """
-
     while True:
         try:
             try:
@@ -42,7 +41,6 @@ def ping_worker(queue, ping_results, end_queue):
             break
 
 def port_scan_worker(queue, open_ports, end_queue):
-
     """Scans a port of a host, returning host and port if port open"""
     # Adapted from https://www.pythonforbeginners.com/code-snippets-source-code/port-scanner-in-python  
     while True:

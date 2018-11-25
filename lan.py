@@ -15,7 +15,7 @@ import bin_tools
 
 
 def retrieve_LAN_info(is_verbose, is_visualized):
-    """Obtain information about the hosts residing on the LAN."""
+    """Obtain information about the hosts residing on the LAN, presenting information along the way"""
 
     verbose.LAN_start()
 
@@ -97,13 +97,13 @@ def basic_info():
     return [local_IP, gateway_mask, interface]
 
 def gateway_IP():
-    """Returns the default gateway IPv4 address."""
+    """Returns the default gateway IPv4 address"""
 
     gws = netifaces.gateways()
     return gws['default'][netifaces.AF_INET][0]  
     
 def LAN_possibilities(local_IP, gatewayMask):
-    """ Get all possibilites of IPv4 addresses within the LAN. """
+    """Get all possibilites of IPv4 addresses within the LAN"""
 
     # AND local IP and gateway mask
     anded_quad = bin_tools.logical_AND_dotted_quads(local_IP, gatewayMask)
@@ -142,7 +142,7 @@ def ping_LAN(is_verbose, LAN_possibilities):
 
     # Build a queue of all of the LAN addresses
     queue = Queue()
-    num_threads = 100
+    num_threads = 200
     for addr in LAN_possibilities:
         queue.put(addr)
     

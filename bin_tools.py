@@ -2,7 +2,7 @@ import itertools
 
 def bin_combinations(bin_str_len):
     """ Returns list of strings of all of the possible binary combinations """
-
+    
     # Get all of the binary possibilities of bin_str_len bits
     bin_possibilities = list(itertools.product(["0", "1"], repeat=bin_str_len))
     bin_possibilities = [''.join(i) for i in bin_possibilities]
