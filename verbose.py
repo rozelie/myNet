@@ -41,7 +41,11 @@ def LAN_ARP_results(ARP_time_elapsed, ARP_hosts, local_IP, gateway_IP):
         elif host == gateway_IP:
             description = "Gateway"
 
-        print("{:16} {:18} {:15} {:20} {}".format(host, MAC, description, manuf, comment))
+        try:
+            print("{:16} {:18} {:15} {:20} {}".format(host, MAC, description, manuf, comment))
+        except:
+            # Ignore NoneType string formatting
+            pass
     print()
 
 def LAN_port_scan_start():

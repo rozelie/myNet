@@ -43,6 +43,7 @@ def retrieve_LAN_info(is_verbose, is_visualized):
         verbose.LAN_ping_results(ping_time_elapsed, ping_hosts, local_IP, gateway)
 
         # Arp request over the LAN range
+        # Skip the first and last items - reserved addresses
         verbose.LAN_ARP_start(possible_LAN_addrs[0], possible_LAN_addrs[-1])
 
         ARP_start = time.time()
@@ -168,8 +169,7 @@ def ARP_LAN(LAN_possibilities):
             comment = mac_parser.get_comment(res)
 
             found_with_ARP.append([ip, res, manuf, comment])
-
-    
+   
     return found_with_ARP
 
 def open_LAN_ports(ping_hosts, ARP_hosts):
@@ -200,15 +200,17 @@ def create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway):
     """
     
     LAN_dict = {}
+
+    # Add local host and gateway
+    LAN_dict[local_IP] = ['', '', '', '', "Local Host", []]
+    LAN_dict[gateway] = ['', '', '', '', "Gateway", []]
+
     # Add description and RTT from ping_hosts
     for host, RTT in ping_hosts:
-        description = ''
-        if host == local_IP:
-            description = "Local Host"
-        elif host == gateway:
-            description = "Gateway"
-        
-        LAN_dict[host] = [str(round(RTT, 4)), '', '', '', description, []]
+        if host in LAN_dict:
+            LAN_dict[host][0] = str(round(RTT, 4))
+        else:
+            LAN_dict[host] = [str(round(RTT, 4)), '', '', '', '', []]
 
     # Add MAC and new hosts from ARP_hosts
     for host, MAC, manuf, comment in ARP_hosts:
