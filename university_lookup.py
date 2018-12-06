@@ -10,6 +10,7 @@ import IP2Location #https://www.ip2location.com/developers/python
 
 def create_university_lookup():
     """Find university AS, find pingable hosts within AS, then export to csv."""
+
     uni_AS_dict = get_uni_AS()
     uni_IP_subnet_dict = get_uni_IP_subnet(uni_AS_dict)
     print("IPs and subnets found")
@@ -22,7 +23,6 @@ def create_university_lookup():
     
     write_hosts_to_file(uni_pingable_hosts)
     
-
 def get_uni_AS():
     """Retrieve names of universities and their Autonomous System (AS) number from maxmind.com."""
 
@@ -155,7 +155,7 @@ def write_hosts_to_file(uni_pingable_hosts):
                 host_loc_str += addr + ":" + ' '.join([str(i) for i in loc]) + ","
 
             host_loc_str = host_loc_str[:-1]
-            hosts_file.write(uni + host_loc_str)
+            hosts_file.write(uni + host_loc_str + "\n")
 
     print("{} university hosts written to csv.".format(len(uni_pingable_hosts)))
 

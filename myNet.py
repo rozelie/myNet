@@ -2,6 +2,7 @@ import argparse
 import os
 import lan
 import beyond
+import approximate
 
 def get_args():
     """Create command-line arguments and return arguments provided by user"""
@@ -30,7 +31,7 @@ def main():
             beyond.retrieve_beyond_info()
 
         if args.approximate:
-            pass
+            approximate.approximate_location()
 
     os._exit(1)
     
