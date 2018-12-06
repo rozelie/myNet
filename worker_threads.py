@@ -40,6 +40,31 @@ def ping_worker(queue, ping_results, end_queue):
         except Empty:
             break
 
+def ping_worker_end_if_found(queue, ping_results, end_queue, num_threads):
+    """ Pings an IPv4 address, returning RTT if there is a response. """
+    while True:
+        try:
+            try:
+                end_queue.get(block=True, timeout = 1)
+                break
+            except Empty:
+                pass
+
+            item = queue.get(block=True, timeout = 1)
+            queue.task_done()
+            
+            RTT = ping_interface.ping(item)
+            if RTT is not None:
+                ping_results.append([item, RTT])
+
+            for _ in range(num_threads + 1):
+                end_queue.put("quit")
+
+            break
+
+        except Empty:
+            break
+
 def port_scan_worker(queue, open_ports, end_queue):
     """Scans a port of a host, returning host and port if port open"""
     # Adapted from https://www.pythonforbeginners.com/code-snippets-source-code/port-scanner-in-python  

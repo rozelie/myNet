@@ -58,3 +58,8 @@ def logical_AND_dotted_quads(quad1, quad2):
             anded_quads_dotted += str(int(anded_quads_bin[i]))
 
     return anded_quads_dotted
+
+def subnet_size_to_bin(subnet_size):
+    one_bits = '1' * subnet_size
+    zero_bits = '0' * (32 - subnet_size)
+    return one_bits + zero_bits

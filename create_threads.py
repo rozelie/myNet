@@ -5,7 +5,7 @@ import worker_threads as worker
 def get_thread_res(inputs_queue, res_obj, num_threads, worker_func):    
     """Start input and worker_func threads, returning worker_thread results"""
 
-    # Start a thread to afford user to quit the traceroute
+    # Start a thread to afford user to quit the threads
     end_queue = Queue()
     input_thread = Thread(target=worker.input_thread, args=(end_queue, num_threads))
     input_thread.start()
@@ -20,5 +20,6 @@ def get_thread_res(inputs_queue, res_obj, num_threads, worker_func):
 
     for thread in threads:
         thread.join()
+
 
     return res_obj
