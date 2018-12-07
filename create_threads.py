@@ -5,23 +5,30 @@ import worker_threads as worker
 def get_thread_res(inputs_queue, res_obj, num_threads, worker_func):    
     """Start input and worker_func threads, returning worker_thread results"""
 
-    # Start a thread to afford user to quit the threads
-    end_flag = Queue()
-    end_queue = Queue()
-    input_thread = Thread(target=worker.input_thread, args=(end_queue, end_flag, num_threads))
-    input_thread.start()
-    print("Enter 'q' and <ENTER> to end the threads.")
+    # Allow user to end threads with 'ctrl+c'
+    print("'ctrl+c' to end the threads.")
 
     # Create threads that accumulate results in res_obj
+    end_queue = Queue()
     threads = []
     for _ in range(num_threads):
         t = Thread(target=worker_func, args=(inputs_queue, res_obj, end_queue))
         t.start()
         threads.append(t)
 
-    for thread in threads:
-        thread.join()
+    # Try to join threads, catching 'ctrl+c' interrupt
+    try:
+        for thread in threads:
+            thread.join()
 
-    end_flag.put(True)
+    except KeyboardInterrupt: 
+        print("\nExiting threads.")
+
+        # Fill end_queue with quit message
+        for _ in range(len(threads)):
+            end_queue.put("quit")
+
+        for thread in threads:
+            thread.join()
 
     return res_obj

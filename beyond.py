@@ -20,6 +20,7 @@ def get_trace_paths():
     for addr, port in zip(servers, ports):
         queue.put([addr, port])
     
+    # Try just making one traceroute multi-threaded...
     num_threads = len(servers)
     host_trace_res = {}
     host_trace_res = create_threads.get_thread_res(queue, host_trace_res, num_threads, trace_route.run_trace)

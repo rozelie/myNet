@@ -90,6 +90,7 @@ def run_trace(queue, trace_res, end_queue, max_hops=30):
             print(dest_name, ":", responses)
             for found_host, RTT in responses:
                 hop_info = [found_host, RTT]
+                
                 if dest_name in trace_res:
                     hop_already_found = False
 

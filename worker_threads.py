@@ -8,24 +8,17 @@ from queue import Queue, Empty
 import ping as ping_interface
 import trace_route
 
-def input_thread(end_queue, end_flag, num_threads):
-    """Creates thread that polls for user input, filling a queue with end message on 'q' input"""
+# def input_thread(end_queue, num_threads):
+#     """Creates thread that polls for user input, filling a queue with end message on 'q' input"""
 
-    # Adapted from https://stackoverflow.com/questions/39501529/python-stop-thread-with-raw-input
-    while True:
-        try:
-            end_flag.get(block=True, timeout = 1)
-            print("I'm exitin.")
-            break
-        except Empty:
-            pass
-
-        user_in = input("")
-        if user_in == 'q':
-            print("Quitting threads.")
-            for _ in range(num_threads + 1):
-                end_queue.put("quit")
-            break
+#     # Adapted from https://stackoverflow.com/questions/39501529/python-stop-thread-with-raw-input
+#     while True:
+#         user_in = input("")
+#         if user_in == 'q':
+#             print("Quitting threads.")
+#             for _ in range(num_threads + 1):
+#                 end_queue.put("quit")
+#             break
                 
 def ping_worker(queue, ping_results, end_queue):
     """ Pings an IPv4 address, returning RTT if there is a response. """
