@@ -8,11 +8,18 @@ from queue import Queue, Empty
 import ping as ping_interface
 import trace_route
 
-def input_thread(end_queue, num_threads):
+def input_thread(end_queue, end_flag, num_threads):
     """Creates thread that polls for user input, filling a queue with end message on 'q' input"""
 
     # Adapted from https://stackoverflow.com/questions/39501529/python-stop-thread-with-raw-input
     while True:
+        try:
+            end_flag.get(block=True, timeout = 1)
+            print("I'm exitin.")
+            break
+        except Empty:
+            pass
+
         user_in = input("")
         if user_in == 'q':
             print("Quitting threads.")
@@ -40,6 +47,26 @@ def ping_worker(queue, ping_results, end_queue):
         except Empty:
             break
 
+def ping_worker_unis(queue, ping_results, end_queue):
+    """ Pings an IPv4 address, returning RTT if there is a response. """
+    while True:
+        try:
+            try:
+                end_queue.get(block=True, timeout = 1)
+                break
+            except Empty:
+                pass
+
+            uni, host = queue.get(block=True, timeout = 1)
+            queue.task_done()
+            
+            RTT = ping_interface.ping(host)
+            if RTT is not None:
+                ping_results.append([uni, host, RTT])
+
+        except Empty:
+            break
+
 def ping_worker_end_if_found(queue, ping_results, end_queue, num_threads):
     """ Pings an IPv4 address, returning RTT if there is a response. """
     while True:
@@ -57,9 +84,10 @@ def ping_worker_end_if_found(queue, ping_results, end_queue, num_threads):
             if RTT is not None:
                 ping_results.append([item, RTT])
 
-            for _ in range(num_threads + 1):
-                end_queue.put("quit")
-
+                # Quit all threads once a host is found
+                for _ in range(num_threads + 1):
+                    end_queue.put("quit")
+            
             break
 
         except Empty:
@@ -91,41 +119,41 @@ def port_scan_worker(queue, open_ports, end_queue):
         except Empty:
             break
 
-def trace_worker(queue, host_trace_res, end_queue):
-    """Runs traceroute of a host, returning info about found hops"""
-    max_hops = 10
+# def trace_worker(queue, host_trace_res, end_queue):
+#     """Runs traceroute of a host, returning info about found hops"""
+#     max_hops = 20
 
-    while True:
-        try:
-            try:
-                end_queue.get(block=True, timeout = 1)
-                break
-            except Empty:
-                pass
+#     while True:
+#         try:
+#             try:
+#                 end_queue.get(block=True, timeout = 1)
+#                 break
+#             except Empty:
+#                 pass
 
-            host = queue.get(block=True, timeout = 1)
-            queue.task_done()
+#             host = queue.get(block=True, timeout = 1)
+#             queue.task_done()
 
-            res = trace_route.run_trace(host, max_hops)
+#             res = trace_route.run_trace(host, max_hops)
+            
+#             # Add to dict the traced hosts and their and RTT
+#             for found_host, RTT in res:
+#                 hop_info = [found_host, RTT]
+#                 if host in host_trace_res:
+#                     hop_already_found = False
 
-            # Add to dict the traced hosts and their and RTT
-            for found_host, RTT in res:
-                hop_info = [found_host, RTT]
-                if host in host_trace_res:
-                    hop_already_found = False
+#                     for host_found, _ in host_trace_res[host]:
+#                         if found_host == host_found:
+#                             hop_already_found = True
+#                             break
 
-                    for host_found, _ in host_trace_res[host]:
-                        if found_host == host_found:
-                            hop_already_found = True
-                            break
+#                     if not hop_already_found:
+#                         host_trace_res[host].append(hop_info)
 
-                    if not hop_already_found:
-                        host_trace_res[host].append(hop_info)
+#                 else:
+#                     host_trace_res[host] = [hop_info]
 
-                else:
-                    host_trace_res[host] = [hop_info]
+#             print(host, "traceroute completed.")
 
-            print(host, "traceroute completed.")
-
-        except Empty:
-            break
+#         except Empty:
+#             break

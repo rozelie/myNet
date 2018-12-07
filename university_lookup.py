@@ -27,7 +27,7 @@ def get_uni_AS():
     """Retrieve names of universities and their Autonomous System (AS) number from maxmind.com."""
 
     # Adapted from https://stackoverflow.com/questions/13332268/python-subprocess-command-with-pipe
-    AS_uni_cmd = 'curl -s http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum2.zip | gunzip | cut -d"," -f3 | sed \'s/"//g\' | sort -u | grep \'University\''
+    AS_uni_cmd = 'curl -s http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum2.zip | gunzip | cut -d"," -f3 | sed \'s/"//g\' | sort -u | grep \'University\\|College\''
     AS_uni_proc = subprocess.Popen(AS_uni_cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
     AS_uni_out = str(AS_uni_proc.communicate()[0])
@@ -149,14 +149,18 @@ def write_hosts_to_file(uni_pingable_hosts):
 
     with open('university_hosts.csv', mode='w') as hosts_file:
         # Create csv rows in format 'university, host_addr: latitude longitude'
+        pingable_unis = 0
         for uni, hosts in iter(uni_pingable_hosts.items()):
-            host_loc_str = ','
-            for addr, loc in iter(hosts.items()):
-                host_loc_str += addr + ":" + ' '.join([str(i) for i in loc]) + ","
+            if hosts:
+                host_loc_str = ','
+                for addr, loc in iter(hosts.items()):
+                    host_loc_str += addr + ":" + ' '.join([str(i) for i in loc]) + ","
 
-            host_loc_str = host_loc_str[:-1]
-            hosts_file.write(uni + host_loc_str + "\n")
+                host_loc_str = host_loc_str[:-1]
+                hosts_file.write(uni + host_loc_str + "\n")
+                pingable_unis += 1
 
-    print("{} university hosts written to csv.".format(len(uni_pingable_hosts)))
+    print("{} universities written to csv.".format(pingable_unis))
+
 
 create_university_lookup()
