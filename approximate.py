@@ -27,7 +27,7 @@ def approximate_location():
     sorted_unis_location = add_location(sorted_unis, uni_lookup)
 
     # Visualize RTT of universities to approximate location
-    print("Generating location approximation visualization./n")
+    print("\nGenerating location approximation visualization.\n")
     mapping.plot_approximate_location(sorted_unis_location)
 
 def read_university_lookup_dict():
