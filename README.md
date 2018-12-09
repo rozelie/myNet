@@ -5,13 +5,13 @@ Combine functionalities of networking probes through custom and/or existing impl
 usage: myNet.py [-h] [-l] [-b] [-a]
 
 optional arguments:
-  -h, --help         show this help message and exit
-  -l, --lan          view LAN information
-  -b, --beyond       view information about networks beyond the LAN
-  -a, --approximate  determine approximate location of machine
+- -h, --help         show this help message and exit
+- -l, --lan          view LAN information
+- -b, --beyond       view information about networks beyond the LAN
+- -a, --approximate  determine approximate location of machine
 
-# Functionalities
-## LAN
+## Functionalities
+### LAN
 - Discovers local IP, gateway IP, gateway mask, and local network interface
 
 - Pings IP addresses within the LAN
@@ -25,7 +25,7 @@ optional arguments:
 
 - Generates a graph of information found about LAN hosts
 
-## Beyond
+### Beyond
 - Discovers public IP address of the gateway
 
 - Pings neighboring subnets (assumes /24 prefix of neighbors)
@@ -37,7 +37,7 @@ optional arguments:
 
 - Generates a graph of the traceroutes
 
-## Approximate
+### Approximate
 - Pings hundreds of universities that have their own autonomous systems
 
 - Based on round-trip times (RTTs) of the universities, generates a color-coded map
@@ -45,7 +45,7 @@ optional arguments:
   - Yellow: First half of next closest RTTs
   - Red:    Last half of next closest RTTs
 
-# Sources
+## Sources
 - netifaces: https://pypi.org/project/netifaces/
 - ICMP Packet and Ping Implementation: https://gist.github.com/pyos/10980172
 - arpreq: https://pypi.org/project/arpreq/
