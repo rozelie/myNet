@@ -8,17 +8,6 @@ from queue import Queue, Empty
 import ping as ping_interface
 import trace_route
 
-# def input_thread(end_queue, num_threads):
-#     """Creates thread that polls for user input, filling a queue with end message on 'q' input"""
-
-#     # Adapted from https://stackoverflow.com/questions/39501529/python-stop-thread-with-raw-input
-#     while True:
-#         user_in = input("")
-#         if user_in == 'q':
-#             print("Quitting threads.")
-#             for _ in range(num_threads + 1):
-#                 end_queue.put("quit")
-#             break
                 
 def ping_worker(queue, ping_results, end_queue):
     """ Pings an IPv4 address, returning RTT if there is a response. """
@@ -111,42 +100,3 @@ def port_scan_worker(queue, open_ports, end_queue):
 
         except Empty:
             break
-
-# def trace_worker(queue, host_trace_res, end_queue):
-#     """Runs traceroute of a host, returning info about found hops"""
-#     max_hops = 20
-
-#     while True:
-#         try:
-#             try:
-#                 end_queue.get(block=True, timeout = 1)
-#                 break
-#             except Empty:
-#                 pass
-
-#             host = queue.get(block=True, timeout = 1)
-#             queue.task_done()
-
-#             res = trace_route.run_trace(host, max_hops)
-            
-#             # Add to dict the traced hosts and their and RTT
-#             for found_host, RTT in res:
-#                 hop_info = [found_host, RTT]
-#                 if host in host_trace_res:
-#                     hop_already_found = False
-
-#                     for host_found, _ in host_trace_res[host]:
-#                         if found_host == host_found:
-#                             hop_already_found = True
-#                             break
-
-#                     if not hop_already_found:
-#                         host_trace_res[host].append(hop_info)
-
-#                 else:
-#                     host_trace_res[host] = [hop_info]
-
-#             print(host, "traceroute completed.")
-
-#         except Empty:
-#             break

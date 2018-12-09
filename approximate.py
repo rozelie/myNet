@@ -82,7 +82,7 @@ def ping_uni_hosts(uni_lookup):
     return university_RTT
 
 def sort_universities(university_RTT, uni_lookup):
-    """Find the closest university based on average RTTs."""
+    """Sort universities based on average RTTs."""
 
     for uni, RTTs in iter(university_RTT.items()):
         university_RTT[uni] = mean(RTTs)

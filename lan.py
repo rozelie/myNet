@@ -103,15 +103,15 @@ def gateway_IP():
     gws = netifaces.gateways()
     return gws['default'][netifaces.AF_INET][0]  
     
-def LAN_possibilities(local_IP, gatewayMask):
+def LAN_possibilities(local_IP, gateway_mask):
     """Get all possibilites of IPv4 addresses within the LAN"""
 
     # AND local IP and gateway mask
-    anded_quad = bin_tools.logical_AND_dotted_quads(local_IP, gatewayMask)
+    anded_quad = bin_tools.logical_AND_dotted_quads(local_IP, gateway_mask)
 
     # Convert dotted quads to binary strings
     anded_bitStr = bin_tools.quad_to_bin_str(anded_quad)
-    mask_bitStr = bin_tools.quad_to_bin_str(gatewayMask)
+    mask_bitStr = bin_tools.quad_to_bin_str(gateway_mask)
 
     # Find the index at which the mask ends (the first 0 bit)
     mask_end_index = 0

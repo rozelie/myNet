@@ -2,7 +2,7 @@ from graphviz import Digraph
 import lan
 
 class lan_viz():
-    """Creates graphviz diagram for the LAN visualization"""
+    """Creates graphviz diagram for the LAN visualization."""
 
     def __init__(self, LAN_Dict_in):
         self.LAN_Dict = LAN_Dict_in
@@ -72,8 +72,42 @@ class lan_viz():
             else:
                 break
 
+class neighboring_subnets():
+    """Creates graphviz diagram for the neighboring subnets visualization."""
+
+    def __init__(self, ping_res, gateway_IP):
+        self.ping_res = ping_res
+        self.gateway_IP = gateway_IP
+        self.dot = Digraph(comment="Neighboring Subnets Visualization", format="png", engine="circo")
+        self.node_info = "{}\nRTT: {}"
+
+    def visualize_neighbors(self):
+        # Create the gateway node
+        self.dot.attr('node', color='green')
+        self.dot.node(self.gateway_IP, "Local Gateway\n" + self.gateway_IP)
+
+        for subnet, found_hosts in iter(self.ping_res.items()):
+            if found_hosts:
+                # Connect gateway to a subnet node
+                self.dot.attr('node', color='red')
+                self.dot.node(subnet, subnet)
+                self.dot.edge(self.gateway_IP, subnet)
+                    
+                # Connect each subnet host to the subnet node
+                for host in found_hosts:
+                    self.dot.attr('node', color='blue')
+                    host_IP = host[0]
+                    host_RTT = str(round(host[1], 2))
+                    host_label = self.node_info.format(host_IP, host_RTT)
+
+                    self.dot.node(host_IP, host_label)
+                    self.dot.edge(subnet, host_IP)
+
+        # Save and display graph
+        self.dot.render('graphviz/neighbors_vis.gv', view=True)
+                    
 class beyond_viz():
-    """Creates graphviz diagram for the traceroute visualization"""
+    """Creates graphviz diagram for the traceroute visualization."""
 
     def __init__(self, trace_res):
         self.trace_res = trace_res
