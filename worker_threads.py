@@ -30,7 +30,7 @@ def ping_worker(queue, ping_results, end_queue):
             break
 
 def ping_worker_unis(queue, ping_results, end_queue):
-    """ Pings an IPv4 address, returning RTT if there is a response. """
+    """Pings an IPv4 address, returning RTT if there is a response."""
     while True:
         try:
             try:

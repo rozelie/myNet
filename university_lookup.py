@@ -14,8 +14,6 @@ def create_university_lookup():
     uni_AS_dict = get_uni_AS()
     uni_IP_subnet_dict = get_uni_IP_subnet(uni_AS_dict)
     print("IPs and subnets found")
-    
-    # test = {'Carnegie Mellon University': ['209.129.244.0', '23']}
 
     uni_pingable_hosts = find_pingable_hosts(uni_IP_subnet_dict)
     

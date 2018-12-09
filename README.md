@@ -2,6 +2,8 @@
 Combine functionalities of networking probes through custom and/or existing implementations to capture and view networking information and topologies within the LAN and beyond.
 
 ## Usage
+All functionalities require root privileges for socket creations.
+
 usage: myNet.py [-h] [-l] [-b] [-a]
 
 optional arguments:
@@ -44,6 +46,9 @@ optional arguments:
   - Green:  Top ten closest RTTs
   - Yellow: First half of next closest RTTs
   - Red:    Last half of next closest RTTs
+
+- Run university_lookup.py to update univeristy autonomous system lookup
+    - Requires a valid IP2Location binary (must also alter path in university_lookup.add_host_location())
 
 ## Sources
 - netifaces: https://pypi.org/project/netifaces/
