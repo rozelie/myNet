@@ -10,21 +10,31 @@ import bin_tools
 import create_threads
 from viz import beyond_viz, neighboring_subnets
 
-def retrieve_beyond_info():
-    """Initiates traceroutes and passes results to generate visualization."""
+def run_beyond_functions():
+    """Initiates pinging of neighboring subnets and remote server traceroutes and passes results to generate visualization."""
+    
+    beyond_begin_str = "BEGIN BEYOND FUNCTIONS"
+    print(beyond_begin_str)
+    print("=" * len(beyond_begin_str))
+
     # Deduce neighboring subnets and ping a sample of those subnets
     neighbor_res, public_IP = check_neighboring_subnets()
 
     # Visualize the found neighboring subnets
+    print("Generating neighboring subnets visualization.")
     neighboring_subnets(neighbor_res, public_IP).visualize_neighbors()
 
     # Run traceroute to servers across the world
-    #host_trace_res = get_trace_paths()
+    print("\nBegin remote server traceroutes.")
+    host_trace_res = get_trace_paths()
     
     # Visualize the traceroute
-    #beyond_viz(host_trace_res).visualize_traceroute()
+    print("Generating remote server traceroute visualization.\n")
+    beyond_viz(host_trace_res).visualize_traceroute()
 
 def check_neighboring_subnets():
+    """Contains functions related to finding and pinging neighboring subnets."""
+
     # Get information about the LAN
     _, gateway_mask, _ = lan.basic_info()
     public_IP = get('https://api.ipify.org').text
@@ -34,7 +44,7 @@ def check_neighboring_subnets():
     smallest_IP, largest_IP = subnet_range(public_IP, gateway_mask)
     print("Public LAN IP range: {} to {}".format(smallest_IP, largest_IP))
 
-    # Generate list of neighboring IP ranges to ping (assuming /24 masks)
+    # Generate list of neighboring IP ranges to ping (assuming /24 prefixes)
     neighboring_subnets = get_neighboring_subnets(smallest_IP, largest_IP)
 
     # Ping subnet neighbors to retrieve information about surrounding subnets
@@ -43,12 +53,13 @@ def check_neighboring_subnets():
     return neighbor_res, public_IP
     
 def subnet_range(public_IP, gateway_mask):
+    """Returns the smallest and largest public IP ranges of the subnet."""
+
     # AND public IP and gateway mask
     anded_quad = bin_tools.logical_AND_dotted_quads(public_IP, gateway_mask)
 
-    mask_bitStr = bin_tools.quad_to_bin_str(gateway_mask)
-
     # Find the index at which the mask ends (the first 0 bit)
+    mask_bitStr = bin_tools.quad_to_bin_str(gateway_mask)
     mask_end_index = 0
     for i in range(len(mask_bitStr)):
         if mask_bitStr[i] == "0":
@@ -74,7 +85,9 @@ def subnet_range(public_IP, gateway_mask):
 
     return smallest_IP, largest_IP
     
-def get_neighboring_subnets(smallest_IP, largest_IP ):
+def get_neighboring_subnets(smallest_IP, largest_IP):
+    """Returns list of neighboring subnets."""
+
     smallest_split = smallest_IP.split(".")
     largest_split = largest_IP.split(".")
     smallest_third_quad = smallest_split[2]
@@ -92,18 +105,20 @@ def get_neighboring_subnets(smallest_IP, largest_IP ):
     return neighboring_subnets
   
 def ping_neighbors(neighboring_subnets):
+    """Pings a sample of found neighboring subnets."""
+
     # Build a queue of addresses to ping in each neighboring subnet
     queue = Queue()
 
     # Construct IPv4 addresses in the subnets to ping
-    num_addr_to_try = 10
+    subnet_sample_size = 10
     for addr in neighboring_subnets:
         split_addr = addr.split(".")
-        for i in range(1, num_addr_to_try + 1):
+        for i in range(1, subnet_sample_size + 1):
             new_addr = '.'.join(split_addr[:3]) + '.' + str(i)
             queue.put(new_addr)
 
-    print("Pinging subnets.")
+    print("Pinging neighboring subnets.")
 
     # Start a thread for each ping
     num_threads = 200
@@ -138,7 +153,7 @@ def get_trace_paths():
     servers = ["www.uaa.alaska.edu", "www.fau.edu", "meu.edu.lb"]
     host_trace_res = {}
     for server in servers:
-        print("Running traceroute to", server)
+        print("Running traceroute to {}.".format(server))
 
         # Run traceroute to sever
         trace_res = trace_route.run_trace(server)

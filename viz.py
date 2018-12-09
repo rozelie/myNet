@@ -49,7 +49,7 @@ class lan_viz():
     def create_host_nodes(self, local_host_IP):
         """Create nodes for hosts on the LAN with an edge to the local host."""
 
-        max_nodes = 30
+        max_nodes = 15
         nodes_created = 0
         for host in self.LAN_Dict:
             if nodes_created <= max_nodes:
@@ -105,7 +105,7 @@ class neighboring_subnets():
 
         # Save and display graph
         self.dot.render('graphviz/neighbors_vis.gv', view=True)
-                    
+
 class beyond_viz():
     """Creates graphviz diagram for the traceroute visualization."""
 
@@ -125,6 +125,7 @@ class beyond_viz():
         self.dot.attr('node', color='green')
         self.dot.node(self.local_IP, "Local Host\n" + self.local_IP)
 
+        # Create paths for each traceroute
         for server in self.trace_res:
             last_host = self.local_IP
 

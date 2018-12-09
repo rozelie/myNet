@@ -14,7 +14,7 @@ import create_threads
 import bin_tools
 
 
-def retrieve_LAN_info(is_verbose, is_visualized):
+def retrieve_LAN_info():
     """Obtain information about the hosts residing on the LAN, presenting information along the way"""
 
     verbose.LAN_start()
@@ -37,7 +37,7 @@ def retrieve_LAN_info(is_verbose, is_visualized):
         verbose.LAN_ping_start(possible_LAN_addrs[0], possible_LAN_addrs[-1])
 
         ping_start = time.time()
-        ping_hosts = ping_LAN(is_verbose, possible_LAN_addrs)
+        ping_hosts = ping_LAN(possible_LAN_addrs)
         ping_time_elapsed = round(time.time() - ping_start, 2)
 
         verbose.LAN_ping_results(ping_time_elapsed, ping_hosts, local_IP, gateway)
@@ -65,8 +65,7 @@ def retrieve_LAN_info(is_verbose, is_visualized):
         LAN_Dict = create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway)
 
         # Create graphviz representation of the LAN
-        if is_visualized:
-            lan_viz(LAN_Dict).visualize_LAN()
+        lan_viz(LAN_Dict).visualize_LAN()
     
 def basic_info():
     """Returns the local IP, gateway mask, and interface if they are found"""
@@ -138,7 +137,7 @@ def LAN_possibilities(local_IP, gateway_mask):
 
     return LAN_possibilities
 
-def ping_LAN(is_verbose, LAN_possibilities):
+def ping_LAN(LAN_possibilities):
     """ Pings all IPv4 address within LAN range. """
 
     # Build a queue of all of the LAN addresses

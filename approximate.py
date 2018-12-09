@@ -9,6 +9,10 @@ import mapping
 def approximate_location():
     """Approximate user's location by finding shortest RTT of universities."""
 
+    beyond_begin_str = "BEGIN APPROXIMATION FUNCTIONS"
+    print(beyond_begin_str)
+    print("=" * len(beyond_begin_str))
+
     # Read in csv of universities
     uni_lookup = read_university_lookup_dict()
 
@@ -22,8 +26,8 @@ def approximate_location():
 
     sorted_unis_location = add_location(sorted_unis, uni_lookup)
 
-    # test = [['South Suburban College of Cook County', 0.034956863948277066, ['41.600868', '-87.606987']], ['University of Illinois at Urbana-Champaign', 0.03752471179496951,['40.111023', '-88.19706']], ['Lake Michigan College', 0.03934621810913086, ['42.201721', '-85.59462']], ['College of duPage', 0.04018974304199219, ['41.785858', '-88.147293']], ['State Fair Community College', 0.04199028015136719, ['39.227249', '-92.846581']]]
-
+    # Visualize RTT of universities to approximate location
+    print("Generating location approximation visualization./n")
     mapping.plot_approximate_location(sorted_unis_location)
 
 def read_university_lookup_dict():
