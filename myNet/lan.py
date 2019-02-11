@@ -1,17 +1,22 @@
-import time
-from threading import Thread
-from queue import Queue, Empty
-import netifaces # https://pypi.org/project/netifaces/
-import arpreq # https://pypi.org/project/arpreq/
-from manuf import manuf as mac_manuf
+#!/usr/bin/env python
+"""Performs lan (-l) functions through 
+   pinging hosts, port-scanning, and a request
+   to the ARP cache. 
+"""
 
-# Local Files
 from viz import lan_viz
 import verbose
 import ping as ping_interface
 import worker_threads as worker
-import create_threads
-import bin_tools
+import create_threads as create_threads
+import bin_tools as bin_tools
+
+import time
+from threading import Thread
+from queue import Queue, Empty
+import netifaces
+import arpreq
+from manuf import manuf as mac_manuf
 
 
 def retrieve_LAN_info():
@@ -108,18 +113,17 @@ def LAN_possibilities(local_IP, gateway_mask):
     # AND local IP and gateway mask
     anded_quad = bin_tools.logical_AND_dotted_quads(local_IP, gateway_mask)
 
-    # Convert dotted quads to binary strings
-    anded_bitStr = bin_tools.quad_to_bin_str(anded_quad)
-    mask_bitStr = bin_tools.quad_to_bin_str(gateway_mask)
+    mask_bit_str = bin_tools.quad_to_bin_str(gateway_mask)
 
     # Find the index at which the mask ends (the first 0 bit)
     mask_end_index = 0
-    for i in range(len(mask_bitStr)):
-        if mask_bitStr[i] == "0":
+    for i in range(len(mask_bit_str)):
+        if mask_bit_str[i] == "0":
             mask_end_index = i
             break
 
     # Get the number of 0 bits that can be altered, according to the mask
+    anded_bit_str = bin_tools.quad_to_bin_str(anded_quad)
     changeable_bit_length = 32 - mask_end_index
     bin_possibilities = bin_tools.bin_combinations(changeable_bit_length)
 
@@ -130,7 +134,7 @@ def LAN_possibilities(local_IP, gateway_mask):
     # Get the entire binary representation of all possible LAN IPv4 addresses
     LAN_possibilities_bin = []
     for combo in bin_possibilities:
-        LAN_possibilities_bin.append(anded_bitStr[:mask_end_index] + combo)
+        LAN_possibilities_bin.append(anded_bit_str[:mask_end_index] + combo)
 
     # Transform binary addresses to IPv4
     LAN_possibilities = [bin_tools.bin_to_dotted_quad(i) for i in LAN_possibilities_bin]
@@ -138,7 +142,7 @@ def LAN_possibilities(local_IP, gateway_mask):
     return LAN_possibilities
 
 def ping_LAN(LAN_possibilities):
-    """ Pings all IPv4 address within LAN range. """
+    """Pings all IPv4 address within LAN range"""
 
     # Build a queue of all of the LAN addresses
     queue = Queue()
@@ -157,7 +161,7 @@ def ping_LAN(LAN_possibilities):
     return LAN_hosts
 
 def ARP_LAN(LAN_possibilities):
-    """Returns IPv4 and MAC addresses of the ARP cache."""
+    """Returns IPv4 and MAC addresses of the ARP cache"""
 
     found_with_ARP = []
     mac_parser = mac_manuf.MacParser(update=True)
@@ -172,7 +176,7 @@ def ARP_LAN(LAN_possibilities):
     return found_with_ARP
 
 def open_LAN_ports(ping_hosts, ARP_hosts):
-    """Scan ports of LAN hosts."""
+    """Scan ports of LAN hosts"""
 
     # Get the list of unique hosts
     ping_hosts = set([host for host, RTT in ping_hosts])
@@ -195,7 +199,7 @@ def open_LAN_ports(ping_hosts, ARP_hosts):
 
 def create_LAN_dict(ping_hosts, ARP_hosts, open_ports, local_IP, gateway):
     """Return dictionary with LAN info in the form of: 
-       {host : [RTT, MAC, Manfuacturer, Product Description, Description, Open Ports]}.
+       {host : [RTT, MAC, Manfuacturer, Product Description, Description, Open Ports]}
     """
     
     LAN_dict = {}

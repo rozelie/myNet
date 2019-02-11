@@ -1,9 +1,16 @@
+#!/usr/bin/env python
+"""Performs approximate (-b) mapping functions through 
+   generating a geopandas mapped based on RTT of university
+   host pings. 
+"""
+
 import geopandas
 import matplotlib.pyplot as plt
 from shapely.geometry import Point
 import pandas as pd
 
 def plot_approximate_location(sorted_unis):
+    """Create color-coded geopandas map based on RTT"""
     
     # Plot blank world map
     world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
@@ -23,7 +30,7 @@ def plot_approximate_location(sorted_unis):
     plt.show()
 
 def get_uni_points(sorted_unis):
-    """Create GeoDataFrame of the university locations."""
+    """Create GeoDataFrame of the university locations"""
 
     locations_dict = {'Latitude' : [], 'Longitude' : []}
     for uni in sorted_unis:
@@ -41,7 +48,7 @@ def get_uni_points(sorted_unis):
     return uni_points
 
 def split_unis(uni_points):
-    """Split university locations based on their RTT (list already sorted by RTT)."""
+    """Split university locations based on their RTT (list already sorted by RTT)"""
 
     # Split universities into three groups:
     #   green:  ten closest

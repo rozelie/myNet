@@ -1,5 +1,11 @@
-import csv
+#!/usr/bin/env python
+"""Performs approximate (-a) functions through 
+   pinging autonomous systems of universities. 
+"""
+
 import worker_threads
+
+import csv
 from queue import Queue, Empty
 from threading import Thread
 from statistics import mean
@@ -7,7 +13,7 @@ import IP2Location #https://www.ip2location.com/developers/python
 import mapping
 
 def approximate_location():
-    """Approximate user's location by finding shortest RTT of universities."""
+    """Approximate user's location by finding shortest RTT of universities"""
 
     beyond_begin_str = "BEGIN APPROXIMATION FUNCTIONS"
     print(beyond_begin_str)
@@ -31,7 +37,7 @@ def approximate_location():
     mapping.plot_approximate_location(sorted_unis_location)
 
 def read_university_lookup_dict():
-    """Builds dictionary from university hosts file."""
+    """Builds dictionary from university hosts file"""
 
     uni_lookup = {}
     with open('university_hosts.csv', mode='r') as hosts_file:
@@ -52,7 +58,8 @@ def read_university_lookup_dict():
     return uni_lookup
 
 def ping_uni_hosts(uni_lookup):
-    """Record RTT of pinged university hosts."""
+    """Record RTT of pinged university hosts"""
+
     print("Pinging universities...")
     university_RTT = {}
 
@@ -86,7 +93,7 @@ def ping_uni_hosts(uni_lookup):
     return university_RTT
 
 def sort_universities(university_RTT, uni_lookup):
-    """Sort universities based on average RTTs."""
+    """Sort universities based on average RTTs"""
 
     for uni, RTTs in iter(university_RTT.items()):
         university_RTT[uni] = mean(RTTs)
@@ -98,7 +105,7 @@ def sort_universities(university_RTT, uni_lookup):
     return sorted_unis
 
 def add_location(sorted_unis, uni_lookup):
-    """Add location of universities based on the lookup."""
+    """Add location of universities based on the lookup"""
 
     sorted_unis_location = []
     for uni, RTT in sorted_unis:
@@ -109,7 +116,7 @@ def add_location(sorted_unis, uni_lookup):
     return sorted_unis_location
 
 def print_closest_unis(sorted_unis, uni_lookup):
-    """Prints the closest universities, their avg. RTT, and location."""
+    """Prints the closest universities, their avg. RTT, and location"""
 
     # Open IP2Location binary
     IP2LocObj = IP2Location.IP2Location()

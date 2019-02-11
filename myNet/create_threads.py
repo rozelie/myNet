@@ -1,6 +1,12 @@
+#!/usr/bin/env python
+"""Creates threads for functions passed as parameter,
+   returning results upon completion. 
+"""
+
+import worker_threads as worker
+
 from threading import Thread
 from queue import Queue, Empty
-import worker_threads as worker
 
 def get_thread_res(inputs_queue, res_obj, num_threads, worker_func):    
     """Start input and worker_func threads, returning worker_thread results"""

@@ -1,0 +1,37 @@
+// LAN Visualization
+digraph {
+	node [color=green]
+	"10.0.0.27" [label="Local Host (10.0.0.27)
+RTT: 
+MAC: c8:21:58:31:7a:bd
+Manufacturer: IntelCor
+Product Description: None
+Open Ports:[]"]
+	node [color=green]
+	"10.0.0.1" [label="Gateway (10.0.0.1)
+RTT: 
+MAC: 5c:e3:0e:4c:2f:68
+Manufacturer: ArrisGro
+Product Description: None
+Open Ports:[]"]
+	edge [color=green]
+	"10.0.0.27" -> "10.0.0.1"
+	node [color=blue]
+	edge [color=blue]
+	"10.0.0.12" [label="10.0.0.12
+RTT: null
+MAC: 7c:2e:bd:15:2c:70
+Manufacturer: Google
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.27" -> "10.0.0.12"
+	node [color=blue]
+	edge [color=blue]
+	"10.0.0.128" [label="10.0.0.128
+RTT: null
+MAC: a0:c9:a0:7e:9a:0d
+Manufacturer: MurataMa
+Product Description: None
+Open Ports:[]"]
+	"10.0.0.27" -> "10.0.0.128"
+}

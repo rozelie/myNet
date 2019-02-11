@@ -1,5 +1,8 @@
-"""
-https://gist.github.com/pyos/10980172
+#!/usr/bin/env python
+"""Creats ICMP packet and sends a ping to a server,
+   returning RTT. 
+
+   Source: https://gist.github.com/pyos/10980172
 """
 
 import time

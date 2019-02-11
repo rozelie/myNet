@@ -1,8 +1,14 @@
-from graphviz import Digraph
+#!/usr/bin/env python
+"""Generates GraphViz graphs of information gathered
+   about the LAN, neighboring subnets, and traceroutes. 
+"""
+
 import lan
 
+from graphviz import Digraph
+
 class lan_viz():
-    """Creates graphviz diagram for the LAN visualization."""
+    """Creates graphviz diagram for the LAN visualization"""
 
     def __init__(self, LAN_Dict_in):
         self.LAN_Dict = LAN_Dict_in
@@ -27,7 +33,7 @@ class lan_viz():
         self.dot.render('graphviz/LANvis.gv', view=True)
 
     def create_unique_node(self, node_desc):
-        """Creates a special node based on node description."""
+        """Creates a special node based on node description"""
         
         try:
             IP = [host for host in self.LAN_Dict if self.LAN_Dict[host][4] == node_desc][0]
@@ -47,7 +53,7 @@ class lan_viz():
         return IP
 
     def create_host_nodes(self, local_host_IP):
-        """Create nodes for hosts on the LAN with an edge to the local host."""
+        """Create nodes for hosts on the LAN with an edge to the local host"""
 
         max_nodes = 15
         nodes_created = 0
@@ -73,7 +79,7 @@ class lan_viz():
                 break
 
 class neighboring_subnets():
-    """Creates graphviz diagram for the neighboring subnets visualization."""
+    """Creates graphviz diagram for the neighboring subnets visualization"""
 
     def __init__(self, ping_res, gateway_IP):
         self.ping_res = ping_res
@@ -107,7 +113,7 @@ class neighboring_subnets():
         self.dot.render('graphviz/neighbors_vis.gv', view=True)
 
 class beyond_viz():
-    """Creates graphviz diagram for the traceroute visualization."""
+    """Creates graphviz diagram for the traceroute visualization"""
 
     def __init__(self, trace_res):
         self.trace_res = trace_res

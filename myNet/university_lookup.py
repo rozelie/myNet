@@ -1,15 +1,18 @@
-import subprocess
+#!/usr/bin/env python
+"""Creates a csv of hosts residing within autonomous systems
+   of universities. 
+"""
+
 import bin_tools
 import worker_threads
+
+import subprocess
 from queue import Queue, Empty
 from threading import Thread
-import IP2Location #https://www.ip2location.com/developers/python
-
-# Leveraged to find IP's associated with a university's IP:
-#   https://www.quora.com/Is-there-a-way-to-find-all-the-IP-blocks-associated-with-a-university
+import IP2Location
 
 def create_university_lookup():
-    """Find university AS, find pingable hosts within AS, then export to csv."""
+    """Find university AS, find pingable hosts within AS, then export to csv"""
 
     uni_AS_dict = get_uni_AS()
     uni_IP_subnet_dict = get_uni_IP_subnet(uni_AS_dict)
@@ -22,7 +25,7 @@ def create_university_lookup():
     write_hosts_to_file(uni_pingable_hosts)
     
 def get_uni_AS():
-    """Retrieve names of universities and their Autonomous System (AS) number from maxmind.com."""
+    """Retrieve names of universities and their Autonomous System (AS) number from maxmind.com"""
 
     # Adapted from https://stackoverflow.com/questions/13332268/python-subprocess-command-with-pipe
     AS_uni_cmd = 'curl -s http://download.maxmind.com/download/geoip/database/asnum/GeoIPASNum2.zip | gunzip | cut -d"," -f3 | sed \'s/"//g\' | sort -u | grep \'University\\|College\''
@@ -46,7 +49,7 @@ def get_uni_AS():
     return uni_AS_dict
 
 def get_uni_IP_subnet(uni_AS_dict):
-    """Leverage 'whois' to get a subnet associated with university AS."""
+    """Leverage 'whois' to get a subnet associated with university AS"""
 
     uni_IP_subnet_dict = {}
     for uni, AS in iter(uni_AS_dict.items()):
@@ -65,7 +68,7 @@ def get_uni_IP_subnet(uni_AS_dict):
     return uni_IP_subnet_dict
 
 def find_pingable_hosts(uni_IP_subnet_dict):
-    """Ping hosts within university subnets to gather hosts that respond to pings."""
+    """Ping hosts within university subnets to gather hosts that respond to pings"""
 
     uni_pingable_hosts = {}
     for uni, (subnet, mask) in iter(uni_IP_subnet_dict.items()):
@@ -100,7 +103,7 @@ def find_pingable_hosts(uni_IP_subnet_dict):
     return uni_pingable_hosts
 
 def get_possible_subnet_addrs(subnet, mask):
-    """Get all possible IPv4 addresses within subnet."""
+    """Get all possible IPv4 addresses within subnet"""
 
     mask = int(mask)
         
@@ -122,16 +125,16 @@ def get_possible_subnet_addrs(subnet, mask):
     return subnet_possibilities
 
 def add_host_location(uni_pingable_hosts):
-    """Add host's latitude and longitude to dictionary."""
+    """Add host's latitude and longitude to dictionary"""
 
     # Open IP2Location binary
-    IP2LocObj = IP2Location.IP2Location()
-    IP2LocObj.open("IP2LOCATION-LITE-DB5.BIN")
+    IP2_Loc = IP2Location.IP2Location()
+    IP2_Loc.open("IP2LOCATION-LITE-DB5.BIN")
     
     for uni, hosts_dict in iter(uni_pingable_hosts.items()):
         for host, _ in iter(hosts_dict.items()):
             
-            record = IP2LocObj.get_all(host)         
+            record = IP2_Loc.get_all(host)         
             if record:
                 hosts_dict[host] = [record.latitude, record.longitude]
             else:
@@ -143,7 +146,7 @@ def add_host_location(uni_pingable_hosts):
     return uni_pingable_hosts
 
 def write_hosts_to_file(uni_pingable_hosts):
-    """Write university host locations to csv."""
+    """Write university host locations to csv"""
 
     with open('university_hosts.csv', mode='w') as hosts_file:
         # Create csv rows in format 'university, host_addr: latitude longitude'

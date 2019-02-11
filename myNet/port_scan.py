@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+"""Performs multi-threaded port scanning for a
+   queue of hosts. 
+"""
+
 import socket
 import time
 import subprocess
@@ -6,8 +11,7 @@ from datetime import datetime
 from queue import Queue, Empty
 
 def port_scan_worker(queue, open_ports, end_queue):
-    """ """
-    # Adapted from https://www.pythonforbeginners.com/code-snippets-source-code/port-scanner-in-python
+    """Performs port-scans on hosts from the queue, returning open ports"""
     
     while True:
         try:

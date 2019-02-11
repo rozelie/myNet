@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+"""Stores functions returning verbose information. 
+"""
+
 def LAN_start():
     print("BEGIN LAN HOST RETRIEVAL")
     print("========================\n")
@@ -53,14 +57,4 @@ def LAN_port_scan_start():
 
 def LAN_port_scan_results(port_scan_elapsed, open_ports):
     print("Port Scan Elapsed Time:", port_scan_elapsed, "seconds\n")
-    # print("{:16} {:18} {}".format("Host", "MAC", "Description"))  
-    # print("*" * 46)      
-    # for host, MAC in ARP_hosts:
-    #     description = ""
-    #     if host == local_IP:
-    #         description = "Local Host"
-    #     elif host == gateway_IP:
-    #         description = "Gateway"
-
-    #     print("{:16} {:18} {}".format(host, MAC, description))
     print()

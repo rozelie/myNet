@@ -1,7 +1,11 @@
+#!/usr/bin/env python
+"""Helper functions for binary manipulations. 
+"""
+
 import itertools
 
 def bin_combinations(bin_str_len):
-    """ Returns list of strings of all of the possible binary combinations """
+    """Returns list of strings of all of the possible binary combinations"""
     
     # Get all of the binary possibilities of bin_str_len bits
     bin_possibilities = list(itertools.product(["0", "1"], repeat=bin_str_len))
@@ -10,7 +14,7 @@ def bin_combinations(bin_str_len):
     return bin_possibilities
 
 def quad_to_bin_str(quad):
-    """ Returns binary string representation of a dotted quad string. """
+    """Returns binary string representation of a dotted quad string"""
 
     bin_str_final = ''
     for quad in quad.split('.'):
@@ -25,7 +29,7 @@ def quad_to_bin_str(quad):
     return bin_str_final
 
 def bin_to_dotted_quad(bin_in):
-    """ Returns the dotted quad representation of a binary string. """
+    """Returns the dotted quad representation of a binary string"""
 
     if len(bin_in) != 32:
         raise Exception("Binary string input to bin_to_dotted_quad must be 32 bits.")
@@ -41,7 +45,7 @@ def bin_to_dotted_quad(bin_in):
     return IP_addr
 
 def logical_AND_dotted_quads(quad1, quad2):
-    """ Returns dotted quad of two anded dotted quad addresses """
+    """Returns dotted quad of two anded dotted quad addresses"""
 
     quad1_split = [int(i) for i in quad1.split('.')]
     quad2_split = [int(i) for i in quad2.split('.')]
@@ -60,6 +64,8 @@ def logical_AND_dotted_quads(quad1, quad2):
     return anded_quads_dotted
 
 def subnet_size_to_bin(subnet_size):
+    """Returns binary representation of a subnet based on size"""
+    
     one_bits = '1' * subnet_size
     zero_bits = '0' * (32 - subnet_size)
     return one_bits + zero_bits

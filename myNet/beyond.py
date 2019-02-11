@@ -1,7 +1,9 @@
-import trace_route
-from threading import Thread
-from queue import Queue, Empty
-from requests import get
+#!/usr/bin/env python
+"""Performs beyond (-b) functions through 
+   running pinging a sample of neighboring subnets and
+   performing traceroutes to geographically distributed
+   servers. 
+"""
 
 import trace_route
 import lan
@@ -10,8 +12,13 @@ import bin_tools
 import create_threads
 from viz import beyond_viz, neighboring_subnets
 
+from threading import Thread
+from queue import Queue, Empty
+from requests import get
+
+
 def run_beyond_functions():
-    """Initiates pinging of neighboring subnets and remote server traceroutes and passes results to generate visualization."""
+    """Initiates pinging of neighboring subnets and remote server traceroutes and passes results to generate visualization"""
     
     beyond_begin_str = "BEGIN BEYOND FUNCTIONS"
     print(beyond_begin_str)
@@ -33,7 +40,7 @@ def run_beyond_functions():
     beyond_viz(host_trace_res).visualize_traceroute()
 
 def check_neighboring_subnets():
-    """Contains functions related to finding and pinging neighboring subnets."""
+    """Contains functions related to finding and pinging neighboring subnets"""
 
     # Get information about the LAN
     _, gateway_mask, _ = lan.basic_info()
@@ -53,16 +60,16 @@ def check_neighboring_subnets():
     return neighbor_res, public_IP
     
 def subnet_range(public_IP, gateway_mask):
-    """Returns the smallest and largest public IP ranges of the subnet."""
+    """Returns the smallest and largest public IP ranges of the subnet"""
 
     # AND public IP and gateway mask
     anded_quad = bin_tools.logical_AND_dotted_quads(public_IP, gateway_mask)
 
     # Find the index at which the mask ends (the first 0 bit)
-    mask_bitStr = bin_tools.quad_to_bin_str(gateway_mask)
+    mask_bit_str = bin_tools.quad_to_bin_str(gateway_mask)
     mask_end_index = 0
-    for i in range(len(mask_bitStr)):
-        if mask_bitStr[i] == "0":
+    for i in range(len(mask_bit_str)):
+        if mask_bit_str[i] == "0":
             mask_end_index = i
             break
 
@@ -86,7 +93,7 @@ def subnet_range(public_IP, gateway_mask):
     return smallest_IP, largest_IP
     
 def get_neighboring_subnets(smallest_IP, largest_IP):
-    """Returns list of neighboring subnets."""
+    """Returns list of neighboring subnets"""
 
     smallest_split = smallest_IP.split(".")
     largest_split = largest_IP.split(".")
@@ -105,7 +112,7 @@ def get_neighboring_subnets(smallest_IP, largest_IP):
     return neighboring_subnets
   
 def ping_neighbors(neighboring_subnets):
-    """Pings a sample of found neighboring subnets."""
+    """Pings a sample of found neighboring subnets"""
 
     # Build a queue of addresses to ping in each neighboring subnet
     queue = Queue()
@@ -147,7 +154,7 @@ def ping_neighbors(neighboring_subnets):
     return ping_neighbors_res
 
 def get_trace_paths():
-    """Run traceroute on a number of servers, returning information about the hops."""
+    """Run traceroute on a number of servers, returning information about the hops"""
 
     # University of Alaska - Anchorage, Florida Atlantic University, Middle East University
     servers = ["www.uaa.alaska.edu", "www.fau.edu", "meu.edu.lb"]

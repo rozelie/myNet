@@ -1,3 +1,8 @@
+#!/usr/bin/env python
+"""Houses multi-threaded functions for various
+   functionalities. 
+"""
+
 import socket
 import time
 import subprocess
