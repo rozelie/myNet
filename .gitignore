@@ -1,0 +1,5 @@
+./.vscode
+./__pycache__
+./graphviz
+./myNet/__pycache__
+./myNet/graphviz
